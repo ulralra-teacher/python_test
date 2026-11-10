@@ -1,1 +1,322 @@
-index
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>파이썬 프로그래밍 실습 시스템</title>
+    <style>
+        :root {
+            --primary-color: #4a90e2;
+            --success-color: #2ec4b6;
+            --danger-color: #e71d36;
+            --bg-color: #f8f9fa;
+            --card-bg: #ffffff;
+            --text-color: #333333;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: var(--bg-color); color: var(--text-color); padding: 20px; line-height: 1.6; }
+        .container { max-width: 1000px; margin: 0 auto; background: var(--card-bg); padding: 30px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        header { border-bottom: 2px solid #eef2f5; padding-bottom: 15px; margin-bottom: 25px; display: flex; justify-content: space-between; align-items: center; }
+        h1 { font-size: 24px; color: #2c3e50; }
+        .student-info { display: flex; gap: 15px; background: #eef2f5; padding: 15px; border-radius: 8px; margin-bottom: 25px; }
+        .student-info input { padding: 8px 12px; border: 1px solid #ccc; border-radius: 4px; font-size: 14px; }
+        .student-info input[type="text"] { width: 150px; }
+        .navigation { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; background: #f1f3f5; padding: 10px; border-radius: 6px; }
+        .nav-btn { background: var(--primary-color); color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer; font-weight: bold; }
+        .nav-btn:disabled { background: #ccc; cursor: not-allowed; }
+        #question-select { padding: 6px; border-radius: 4px; border: 1px solid #ccc; max-width: 60%; }
+        .mission-card { border: 1px solid #dee2e6; border-radius: 8px; padding: 20px; margin-bottom: 25px; background: #fff; }
+        .badge { display: inline-block; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: bold; color: white; margin-bottom: 10px; }
+        .badge.기초 { background-color: #2ecc71; }
+        .badge.중급 { background-color: #f1c40f; }
+        .badge.고급 { background-color: #e74c3c; }
+        .section-title { font-size: 16px; font-weight: bold; margin: 15px 0 5px 0; color: #34495e; border-left: 4px solid var(--primary-color); padding-left: 8px; }
+        .text-box { background: #f8f9fa; padding: 12px; border-radius: 6px; font-size: 14px; border: 1px dashed #ced4da; white-space: pre-wrap; }
+        .steps-list { padding-left: 20px; font-size: 14px; }
+        .editor-section { margin-bottom: 25px; }
+        textarea { width: 100%; height: 200px; font-family: 'Courier New', Courier, monospace; font-size: 15px; padding: 15px; border: 2px solid #ced4da; border-radius: 8px; resize: vertical; outline: none; transition: border-color 0.3s; }
+        textarea:focus { border-color: var(--primary-color); }
+        .status-bar { display: flex; justify-content: space-between; align-items: center; background: #e8f4fd; padding: 12px; border-radius: 6px; margin-bottom: 20px; font-size: 14px; }
+        .status-badge { font-weight: bold; padding: 4px 8px; border-radius: 4px; }
+        .status-badge.complete { background: #d9f2e3; color: #1e7e34; }
+        .status-badge.incomplete { background: #fde2e2; color: #bd2130; }
+        .action-buttons { display: flex; gap: 10px; }
+        .btn { flex: 1; padding: 12px; border: none; border-radius: 6px; font-size: 16px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; transition: opacity 0.2s; }
+        .btn:active { opacity: 0.8; }
+        .btn-submit { background-color: var(--success-color); color: white; }
+        .btn-clear { background-color: #6c757d; color: white; }
+        .btn-refresh { background-color: #17a2b8; color: white; }
+        .admin-toggle { background: #343a40; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer; font-size: 12px; }
+        .admin-panel { display: none; margin-top: 30px; border-top: 2px dashed #ccc; padding-top: 20px; }
+        .admin-panel input[type="text"] { width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid #ccc; border-radius: 4px; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <header>
+        <h1 id="site-title">🐍 파이썬 프로그래밍 실습실</h1>
+        <button class="admin-toggle" onclick="toggleAdmin()">⚙ 선생님 화면</button>
+    </header>
+    <div class="student-info">
+        <input type="text" id="student-id" placeholder="학번 (예: 10101)" onchange="saveStudentContext()">
+        <input type="text" id="student-name" placeholder="이름 (예: 홍길동)" onchange="saveStudentContext()">
+        <span style="font-size: 12px; color: #666; align-self: center;">* 학번과 이름을 정확히 적어야 실습 결과가 기록됩니다.</span>
+    </div>
+    <div class="navigation">
+        <button class="nav-btn" id="btn-prev" onclick="moveQuestion(-1)">◀ 이전 문항</button>
+        <div>
+            <select id="question-select" onchange="selectQuestion(this.value)"></select>
+        </div>
+        <button class="nav-btn" id="btn-next" onclick="moveQuestion(1)">다음 문항 ▶</button>
+    </div>
+    <div class="mission-card">
+        <span id="mission-level" class="badge 기초">기초</span>
+        <h2 id="mission-title" style="font-size: 18px; margin-bottom: 15px;">문항 로딩 중...</h2>
+        <div class="section-title">🎯 미션 설명</div>
+        <div id="mission-desc" class="text-box">설명이 들어가는 자리입니다.</div>
+        <div class="section-title">📘 성취기준</div>
+        <div id="mission-standard" class="text-box" style="color: #555;">성취기준 정보</div>
+        <div class="section-title">🚀 성취 기대</div>
+        <div id="mission-expectation" class="text-box" style="color: #555;">성취 기대 효과</div>
+        <div class="section-title">📋 해결 순서</div>
+        <div class="text-box"><ul id="mission-steps" class="steps-list"></ul></div>
+    </div>
+    <div class="editor-section">
+        <div class="section-title">💻 파이썬 코드 작성 구역</div>
+        <textarea id="code-editor" placeholder="# 이곳에 파이썬 코드를 작성하세요.&#10;# 필수 명령어 블록 포함 여부를 검사합니다." oninput="trackDraft()"></textarea>
+    </div>
+    <div class="status-bar">
+        <div>이 문항 제출 횟수: <span id="submit-count" style="font-weight: bold; color: var(--primary-color);">0</span>회</div>
+        <div>완성 여부: <span id="completion-status" class="status-badge incomplete">아직 미완성</span></div>
+    </div>
+    <div class="action-buttons">
+        <button class="btn btn-submit" onclick="validateAndSubmit()">📤 제출하고 자동 채점</button>
+        <button class="btn btn-clear" onclick="clearEditor()">🧹 블록 모두 지우기</button>
+        <button class="btn btn-refresh" onclick="resetEditorToDefault()">⟳ 편집기 새로고침</button>
+    </div>
+    <div class="admin-panel" id="admin-panel">
+        <h3 style="margin-bottom: 10px; color: #2c3e50;">👩‍🏫 선생님 전용 서버 연동 설정</h3>
+        <p style="font-size: 13px; color: #666; margin-bottom: 15px;">Apps Script 웹 앱 주소를 붙여넣고 아래 적용 버튼을 누르세요.</p>
+        <label style="font-weight: bold; font-size: 14px;">구글 앱스 스크립트 주소 (URL):</label>
+        <input type="text" id="web-app-url" placeholder="https://google.com">
+        <button class="nav-btn" onclick="saveAdminSettings()" style="background: #28a745;">🚀 학생 시스템에 주소 적용하기</button>
+    </div>
+</div>
+<script>
+
+    // --- 3단원 교육과정 성취기준 기반 문항 DB ---
+    const QUESTIONS = [
+        {
+            "id": 1, "chapter": "1차시: 반가워, 파이썬!", "level": "기초", "title": "첫 메시지 출력하기",
+            "description": "print() 함수를 사용하여 화면에 'Hello, Python!'이라는 문장을 정확하게 출력해 보세요.",
+            "standard": "[12정03-03] 프로그래밍 언어의 변수, 자료형, 연산자를 활용하여 데이터를 처리하는 코드를 작성한다.",
+            "expectation": "출력 함수 print()의 구조를 완벽히 이해하고 문자열 데이터를 처리할 수 있다.",
+            "steps": ["1단계: 소문자로 print() 함수를 작성합니다.", "2단계: 괄호 안에 문자열 구분 기호(따옴표)를 넣습니다.", "3단계: 문자열 내부에 Hello, Python! 문구를 입력합니다."],
+            "checks": ["print", "Hello, Python!"]
+        },
+        {
+            "id": 2, "chapter": "1차시: 반가워, 파이썬!", "level": "기초", "title": "나만의 다중행 출력",
+            "description": "print() 함수를 연속으로 두 번 사용하여 첫 줄에는 이름, 둘째 줄에는 자신의 컴퓨터공학 관심 분야를 출력해 보세요.",
+            "standard": "[12정03-03] 프로그래밍 언어의 변수, 자료형, 연산자를 활용하여 데이터를 처리하는 코드를 작성한다.",
+            "expectation": "개행 제어 구조를 파악하고 코드의 순차적 동작 흐름을 경험한다.",
+            "steps": ["1단계: 첫 번째 줄에 print()문으로 이름을 적습니다.", "2단계: 두 번째 줄에 또 다른 print()문으로 관심 분야를 적습니다."],
+            "checks": ["print"]
+        },
+        {
+            "id": 3, "chapter": "1차시: 반가워, 파이썬!", "level": "기초", "title": "코드 안에 주석 남기기",
+            "description": "컴퓨터가 해석하지 않는 주석 기호(#)를 달고 바로 오른쪽에 '테스트 완료'를 적어보세요.",
+            "standard": "[12정03-07] 프로그램 개발 과정에서 발생하는 오류(Syntax/런타임/논리 오류)를 디버깅하여 수정한다.",
+            "expectation": "디버깅 시 예외 코드 관리와 주석 처리 기법을 교습한다.",
+            "steps": ["1단계: # 기호를 맨 앞에 적습니다.", "2단계: '테스트 완료' 글자를 작성합니다."],
+            "checks": ["#", "테스트 완료"]
+        },
+        {
+            "id": 4, "chapter": "2차시: 변수와 자료형", "level": "기초", "title": "정수 변수 할당하기",
+            "description": "변수 `age`를 생성한 후 본인의 나이에 해당하는 숫자를 대입(=)하고 출력하는 코드를 완성하세요.",
+            "standard": "[12정03-03] 프로그래밍 언어의 변수, 자료형, 연산자를 활용하여 데이터를 처리하는 코드를 작성한다.",
+            "expectation": "할당 연산자(=)와 정수 변수의 수치 보존 매커니즘을 배운다.",
+            "steps": ["1단계: age = 숫자를 선언합니다.", "2단계: print(age) 구문으로 출력 상태를 검증합니다."],
+            "checks": ["age", "=", "print"]
+        },
+        {
+            "id": 13, "chapter": "5차시: 조건문(if-else)", "level": "중급", "title": "성인 판별 조건문",
+            "description": "변수 `user_age`가 20 이상이면 '성인입니다', 미만이면 '미성년자입니다'를 출력하도록 if-else 문을 작성하세요.",
+            "standard": "[12정03-04] 제어구조(선택, 반복)를 활용하여 논리적인 흐름을 제어하는 프로그램을 구현한다.",
+            "expectation": "분기 구조 연산법과 제어 흐름 설계 능력을 함양한다.",
+            "steps": ["1단계: if user_age >= 20: 형태로 제어 헤더를 정의합니다.", "2단계: 들여쓰기 후 else: 구조를 연결합니다."],
+            "checks": ["if", ">=", "else:", "print"]
+        },
+        {
+            "id": 19, "chapter": "7차시: 반복문(for)", "level": "중급", "title": "지정 횟수 자동 반복",
+            "description": "for문 및 range() 함수를 사용하여 '파이썬 최고!'를 화면에 5번 출력시키는 코드를 작성하세요.",
+            "standard": "[12정03-04] 제어구조(선택, 반복)를 활용하여 논리적인 흐름을 제어하는 프로그램을 구현한다.",
+            "expectation": "반복 수치 제어 구조의 인자 제어 방식을 마스터한다.",
+            "steps": ["1단계: for i in range(5): 루프 블록을 설계합니다.", "2단계: 루프 내부 실행 명령어로 print 함수를 매핑합니다."],
+            "checks": ["for", "in", "range", "print"]
+        }
+    ];
+
+    let currentIndex = 0;
+    let studentScores = {};
+
+        // --- 화면 초기화 및 브라우저 로컬 저장소 동기화 로직 ---
+    window.onload = function() {
+        initScores();
+        loadStudentContext();
+        buildDropdown();
+        renderQuestion(0);
+        const savedUrl = localStorage.getItem("python_web_app_url");
+        if (savedUrl) document.getElementById("web-app-url").value = savedUrl;
+    };
+
+    function initScores() {
+        QUESTIONS.forEach(q => {
+            studentScores[q.id] = { done: 0, tries: 0, first: 0 };
+        });
+    }
+
+    function buildDropdown() {
+        const select = document.getElementById("question-select");
+        select.innerHTML = "";
+        QUESTIONS.forEach((q, idx) => {
+            const opt = document.createElement("option");
+            opt.value = idx;
+            opt.innerText = `[Q${q.id}] ${q.chapter.split(':')[0]} - ${q.title}`;
+            select.appendChild(opt);
+        });
+    }
+
+    function renderQuestion(index) {
+        currentIndex = index;
+        const q = QUESTIONS[index];
+        const record = studentScores[q.id];
+        
+        document.getElementById("question-select").value = index;
+        document.getElementById("btn-prev").disabled = (index === 0);
+        document.getElementById("btn-next").disabled = (index === QUESTIONS.length - 1);
+        
+        document.getElementById("mission-level").className = `badge ${q.level}`;
+        document.getElementById("mission-level").innerText = q.level;
+        document.getElementById("mission-title").innerText = `Q${q.id}. ${q.title} (${q.chapter})`;
+        document.getElementById("mission-desc").innerText = q.description;
+        document.getElementById("mission-standard").innerText = q.standard;
+        document.getElementById("mission-expectation").innerText = q.expectation;
+        
+        const stepsUl = document.getElementById("mission-steps");
+        stepsUl.innerHTML = "";
+        q.steps.forEach(step => {
+            const li = document.createElement("li");
+            li.innerText = step;
+            stepsUl.appendChild(li);
+        });
+        
+        document.getElementById("submit-count").innerText = record.tries;
+        const statusLabel = document.getElementById("completion-status");
+        if (record.done === 1) {
+            statusLabel.className = "status-badge complete";
+            statusLabel.innerText = `✔ 완성 (${record.first}회째 통과)`;
+        } else {
+            statusLabel.className = "status-badge incomplete";
+            statusLabel.innerText = "아직 미완성";
+        }
+        
+        const savedDraft = localStorage.getItem(`draft_q_${q.id}`);
+        document.getElementById("code-editor").value = savedDraft ? savedDraft : "";
+    }
+
+    function moveQuestion(dir) {
+        let target = currentIndex + dir;
+        if (target >= 0 && target < QUESTIONS.length) { renderQuestion(target); }
+    }
+    function selectQuestion(val) { renderQuestion(parseInt(val, 10)); }
+    function trackDraft() {
+        const q = QUESTIONS[currentIndex];
+        const code = document.getElementById("code-editor").value;
+        localStorage.setItem(`draft_q_${q.id}`, code);
+    }
+    // --- 실시간 정적 분석 채점 및 크로스도메인 전송 엔진 ---
+    function clearEditor() {
+        if(confirm("작성 중인 모든 코드가 삭제됩니다. 지우시겠습니까?")) {
+            document.getElementById("code-editor").value = "";
+            trackDraft();
+        }
+    }
+    function resetEditorToDefault() {
+        document.getElementById("code-editor").value = "# 다시 코드를 작성해 보세요.\n";
+        trackDraft();
+    }
+
+    function validateAndSubmit() {
+        const id = document.getElementById("student-id").value.trim();
+        const name = document.getElementById("student-name").value.trim();
+        if (!id || !name) {
+            alert("⚠️ 학번과 이름을 정확히 입력해야 결과를 서버에 송신할 수 있습니다.");
+            return;
+        }
+        const q = QUESTIONS[currentIndex];
+        const code = document.getElementById("code-editor").value;
+        const record = studentScores[q.id];
+        record.tries += 1;
+        
+        let isPass = true;
+        q.checks.forEach(keyword => {
+            if (!code.includes(keyword)) { isPass = false; }
+        });
+        
+        if (isPass) {
+            if (record.done === 0) { record.done = 1; record.first = record.tries; }
+            alert(`🎉 통과했습니다! (${record.tries}번째 시도에 성공)`);
+        } else {
+            alert(`✘ 코드에 필요한 블록이나 필수 명령어가 빠져있거나 오타가 있습니다.`);
+        }
+        renderQuestion(currentIndex);
+        
+        let dataString = "";
+        QUESTIONS.forEach(item => {
+            const r = studentScores[item.id];
+            dataString += `${r.done},${r.tries},${r.first};`;
+        });
+        if(dataString.endsWith(";")) dataString = dataString.slice(0, -1);
+        
+        const serverUrl = localStorage.getItem("python_web_app_url");
+        if (!serverUrl) { return; }
+        
+        const finalTargetUrl = `${serverUrl}?action=submit&id=${encodeURIComponent(id)}&name=${encodeURIComponent(name)}&d=${encodeURIComponent(dataString)}&cb=serverCallback`;
+        const oldScript = document.getElementById("jsonp-script");
+        if (oldScript) oldScript.remove();
+        
+        const script = document.createElement("script");
+        script.id = "jsonp-script";
+        script.src = finalTargetUrl;
+        document.body.appendChild(script);
+    }
+
+    window.serverCallback = function(response) {
+        if (response && response.ok) { console.log("구글 시트 수집 완료"); }
+    };
+    function toggleAdmin() {
+        const panel = document.getElementById("admin-panel");
+        panel.style.display = (panel.style.display === "block") ? "none" : "block";
+    }
+    function saveAdminSettings() {
+        const url = document.getElementById("web-app-url").value.trim();
+        if(!url || !url.startsWith("https://")) { alert("올바른 주소가 아닙니다."); return; }
+        localStorage.setItem("python_web_app_url", url);
+        alert("🚀 주소가 서버에 적용되었습니다.");
+        toggleAdmin();
+    }
+    function saveStudentContext() {
+        localStorage.setItem("student_id_val", document.getElementById("student-id").value);
+        localStorage.setItem("student_name_val", document.getElementById("student-name").value);
+    }
+    function loadStudentContext() {
+        const id = localStorage.getItem("student_id_val");
+        const name = localStorage.getItem("student_name_val");
+        if(id) document.getElementById("student-id").value = id;
+        if(name) document.getElementById("student-name").value = name;
+    }
+</script>
+</body>
+</html>
+
+    
