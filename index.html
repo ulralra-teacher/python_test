@@ -1,322 +1,961 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>파이썬 프로그래밍 실습 시스템</title>
-    <style>
-        :root {
-            --primary-color: #4a90e2;
-            --success-color: #2ec4b6;
-            --danger-color: #e71d36;
-            --bg-color: #f8f9fa;
-            --card-bg: #ffffff;
-            --text-color: #333333;
-        }
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: var(--bg-color); color: var(--text-color); padding: 20px; line-height: 1.6; }
-        .container { max-width: 1000px; margin: 0 auto; background: var(--card-bg); padding: 30px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
-        header { border-bottom: 2px solid #eef2f5; padding-bottom: 15px; margin-bottom: 25px; display: flex; justify-content: space-between; align-items: center; }
-        h1 { font-size: 24px; color: #2c3e50; }
-        .student-info { display: flex; gap: 15px; background: #eef2f5; padding: 15px; border-radius: 8px; margin-bottom: 25px; }
-        .student-info input { padding: 8px 12px; border: 1px solid #ccc; border-radius: 4px; font-size: 14px; }
-        .student-info input[type="text"] { width: 150px; }
-        .navigation { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; background: #f1f3f5; padding: 10px; border-radius: 6px; }
-        .nav-btn { background: var(--primary-color); color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer; font-weight: bold; }
-        .nav-btn:disabled { background: #ccc; cursor: not-allowed; }
-        #question-select { padding: 6px; border-radius: 4px; border: 1px solid #ccc; max-width: 60%; }
-        .mission-card { border: 1px solid #dee2e6; border-radius: 8px; padding: 20px; margin-bottom: 25px; background: #fff; }
-        .badge { display: inline-block; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: bold; color: white; margin-bottom: 10px; }
-        .badge.기초 { background-color: #2ecc71; }
-        .badge.중급 { background-color: #f1c40f; }
-        .badge.고급 { background-color: #e74c3c; }
-        .section-title { font-size: 16px; font-weight: bold; margin: 15px 0 5px 0; color: #34495e; border-left: 4px solid var(--primary-color); padding-left: 8px; }
-        .text-box { background: #f8f9fa; padding: 12px; border-radius: 6px; font-size: 14px; border: 1px dashed #ced4da; white-space: pre-wrap; }
-        .steps-list { padding-left: 20px; font-size: 14px; }
-        .editor-section { margin-bottom: 25px; }
-        textarea { width: 100%; height: 200px; font-family: 'Courier New', Courier, monospace; font-size: 15px; padding: 15px; border: 2px solid #ced4da; border-radius: 8px; resize: vertical; outline: none; transition: border-color 0.3s; }
-        textarea:focus { border-color: var(--primary-color); }
-        .status-bar { display: flex; justify-content: space-between; align-items: center; background: #e8f4fd; padding: 12px; border-radius: 6px; margin-bottom: 20px; font-size: 14px; }
-        .status-badge { font-weight: bold; padding: 4px 8px; border-radius: 4px; }
-        .status-badge.complete { background: #d9f2e3; color: #1e7e34; }
-        .status-badge.incomplete { background: #fde2e2; color: #bd2130; }
-        .action-buttons { display: flex; gap: 10px; }
-        .btn { flex: 1; padding: 12px; border: none; border-radius: 6px; font-size: 16px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; transition: opacity 0.2s; }
-        .btn:active { opacity: 0.8; }
-        .btn-submit { background-color: var(--success-color); color: white; }
-        .btn-clear { background-color: #6c757d; color: white; }
-        .btn-refresh { background-color: #17a2b8; color: white; }
-        .admin-toggle { background: #343a40; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer; font-size: 12px; }
-        .admin-panel { display: none; margin-top: 30px; border-top: 2px dashed #ccc; padding-top: 20px; }
-        .admin-panel input[type="text"] { width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid #ccc; border-radius: 4px; }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>파이썬 기본 문법 실습</title>
+<style>
+:root{
+  --bg:#f4f7fb;--card:#fff;--ink:#1d2433;--sub:#5b6577;--line:#e1e7f0;
+  --primary:#2f6fed;--primary-d:#1f56c4;--ok:#1f9d63;--warn:#e8890c;--bad:#d64545;
+  --teal:#0fa3a3;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:auto;overflow-anchor:none}
+body{margin:0;font-family:"Pretendard","Noto Sans KR","Malgun Gothic",system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.55}
+header{background:linear-gradient(120deg,#1f3fa8,#2f6fed 55%,#0fa3a3);color:#fff;padding:14px 20px}
+.wrap{max-width:none;width:100%;margin:0 auto;padding:0 20px}
+header .wrap{display:flex;flex-direction:column;gap:10px}
+.hrow{display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.htext{display:flex;flex-direction:column;gap:8px;min-width:0;flex:1 1 300px}
+.hright{margin-left:auto;display:flex;align-items:center;gap:10px}
+.gear{width:40px;height:40px;padding:0;border-radius:50%;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.5);color:#fff;display:flex;align-items:center;justify-content:center}
+.gear:hover{background:rgba(255,255,255,.32)}
+header h1{margin:0;font-size:1.35rem}
+.status{font-size:.85rem;background:rgba(255,255,255,.18);padding:4px 12px;border-radius:99px}
+.status.on{background:rgba(31,157,99,.9)}
+.led{display:grid;grid-template-columns:repeat(5,10px);gap:3px;padding:8px;background:#0d1526;border-radius:8px}
+.led i{width:10px;height:10px;border-radius:50%;background:#2a3550;display:block}
+.led i.on{background:#ff4d4d;box-shadow:0 0 6px #ff4d4d}
+.brand small{display:block;opacity:.85;font-size:.75rem}
+.stu{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.submitbtn{background:#fff;color:#1f3fa8;border:0;font-weight:700;padding:8px 14px;border-radius:9px;white-space:nowrap}
+.submitbtn:hover{background:#eef3ff}
+.toast{position:fixed;top:14px;left:50%;transform:translateX(-50%);z-index:1200;max-width:min(92vw,640px);padding:12px 18px;border-radius:12px;font-weight:600;box-shadow:0 6px 24px rgba(20,40,80,.25);background:#1d2433;color:#fff}
+.toast.ok{background:#146c43}
+.toast.bad{background:#9f2d2d}
+header .stu input[type=text]{width:110px;background:rgba(255,255,255,.95);border:1px solid rgba(255,255,255,.6);padding:7px 10px}
+.qnav{background:#fff;border-bottom:1px solid var(--line);padding:8px 0}
+.qnav .chips{margin:0}
+.badges{display:flex;flex-wrap:wrap;gap:6px;max-width:620px}
+.badge{width:30px;height:30px;padding:0;border-radius:50%;border:2px solid rgba(255,255,255,.95);background:#e5484d;color:#fff;font-size:.78rem;font-weight:700;line-height:1;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:background .25s,transform .15s}
+.badge:hover{background:#e5484d;transform:scale(1.1)}
+.badge.done{background:#1fb26b}
+.badge.done:hover{background:#1fb26b}
+.badge.cur{box-shadow:0 0 0 3px rgba(255,255,255,.55)}
+main{padding:24px 0 60px}
+h2{font-size:1.15rem;margin:0 0 6px}
+h3{font-size:1rem;margin:0 0 6px}
+.muted{color:var(--sub);font-size:.88rem}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px;margin-bottom:16px;box-shadow:0 1px 3px rgba(20,40,80,.05)}
+.grid{display:grid;gap:16px;grid-template-columns:minmax(0,1fr) minmax(0,2fr);align-items:start}
+.top{display:grid;gap:16px;grid-template-columns:minmax(0,1fr) minmax(0,2fr);align-items:stretch;margin-bottom:16px}
+.top .card{margin-bottom:0}
+@media(max-width:980px){.top{grid-template-columns:1fr}}
+.grid>div{min-width:0}
+.grid>div:last-child{position:sticky;top:12px}
+@media(max-width:980px){.grid{grid-template-columns:1fr}.grid>div:last-child{position:static}}
+.progress{height:12px;background:#e7edf7;border-radius:99px;overflow:hidden;margin:8px 0}
+.progress>div{height:100%;width:0;background:linear-gradient(90deg,var(--primary),var(--teal));transition:width .4s}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:12px}
+.stat{background:#f1f5fc;border-radius:10px;padding:10px;text-align:center;font-size:.82rem;color:var(--sub)}
+.stat b{display:block;font-size:1.4rem;color:var(--ink)}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+button,.btn{font:inherit;border:1px solid var(--line);background:#fff;color:var(--ink);padding:8px 14px;border-radius:9px;cursor:pointer}
+button:hover{background:#f1f5fc}
+button.primary{background:var(--primary);border-color:var(--primary);color:#fff;font-weight:600}
+button.primary:hover{background:var(--primary-d)}
+button.danger{color:var(--bad);border-color:#f0c6c6}
+button:disabled{opacity:.5;cursor:not-allowed}
+label{display:block;font-size:.85rem;font-weight:600;margin:8px 0 4px}
+input[type=text],input[type=password],textarea{width:100%;font:inherit;padding:9px 11px;border:1px solid var(--line);border-radius:9px;background:#fff}
+textarea{font-family:ui-monospace,Consolas,monospace;font-size:.85rem;min-height:220px;resize:vertical}
+.chips{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:6px;margin:8px 0}
+@media(max-width:1100px){.chips{grid-template-columns:repeat(4,minmax(0,1fr))}}
+@media(max-width:700px){.chips{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.chip{padding:6px 8px;border-radius:10px;border:1px solid var(--line);background:#fff;cursor:pointer;font-size:.78rem;line-height:1.3;text-align:center;word-break:keep-all;overflow-wrap:anywhere}
+.chip.active{background:var(--primary);color:#fff;border-color:var(--primary)}
+.chip.done{border-color:var(--ok)}
+.chip.done::after{content:" ✔";color:var(--ok)}
+.chip.active.done::after{color:#fff}
+.level{font-size:.72rem;padding:2px 8px;border-radius:99px;background:#e8f0ff;color:var(--primary);margin-left:6px}
+.mission{background:#fff9ec;border:1px solid #f3e0b0;border-radius:12px;padding:14px}
+.mission h3{color:#9a6200}
+.mission ol{margin:6px 0 0 18px;padding:0}
+.checks{list-style:none;margin:10px 0 0;padding:0}
+.checks li{padding:6px 10px;border-radius:8px;margin-bottom:5px;background:#f6f8fc;font-size:.88rem}
+.checks li.pass{background:#e6f6ee;color:#146c43}
+.checks li.fail{background:#fdeaea;color:#9f2d2d}
+.result{margin-top:10px;padding:12px;border-radius:10px;font-weight:600;display:none}
+.result.pass{display:block;background:#e6f6ee;color:#146c43}
+.result.fail{display:block;background:#fdeaea;color:#9f2d2d}
+.sim{width:100%;height:calc(100vh - 230px);min-height:560px;border:1px solid var(--line);border-radius:12px;background:#fff}
+.note{font-size:.8rem;color:var(--sub);margin-top:8px}
+.teacher{border:1px dashed #b9c6e0;background:#f8faff}
+table{width:100%;border-collapse:collapse;font-size:.85rem;margin-top:10px}
+th,td{border-bottom:1px solid var(--line);padding:6px 8px;text-align:left}
+th{background:#f1f5fc}
+.tag-ok{color:var(--ok);font-weight:700}.tag-bad{color:var(--bad);font-weight:700}
+.hidden{display:none!important}
+/* 선생님 화면 */
+.tscreen{position:fixed;inset:0;z-index:1000;background:var(--bg);overflow:auto}
+.tbar{position:sticky;top:0;z-index:1;display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:12px 20px;background:#fff;border-bottom:1px solid var(--line)}
+.tbar h2{margin:0;flex:1;min-width:220px}
+.tbody{display:grid;grid-template-columns:minmax(220px,1fr) minmax(0,3fr);gap:16px;padding:16px 20px 60px}
+.tlist{display:flex;flex-direction:column;gap:6px}
+.tlist button{text-align:left;padding:8px 12px;font-size:.88rem}
+.tlist button.active{background:var(--primary);border-color:var(--primary);color:#fff}
+.tlist button.mod::after{content:" ● 수정됨";font-size:.75rem;color:var(--warn)}
+.tlist button.active.mod::after{color:#ffe2b0}
+.tform{background:#fff;border:1px solid var(--line);border-radius:14px;padding:18px;max-width:900px}
+.tscreen textarea{min-height:0;font-family:inherit;font-size:.92rem}
+.tscreen select{font:inherit;padding:8px 10px;border:1px solid var(--line);border-radius:9px;background:#fff}
+@media(max-width:820px){.tbody{grid-template-columns:1fr}}
+.qbar{display:flex;align-items:center;gap:10px;padding:6px 0}.qbar b{font-size:.9rem;white-space:nowrap}.qbar span{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:.85rem;color:var(--sub)}.qbar button{white-space:nowrap}#chips.hide{display:none}
+</style>
 </head>
 <body>
-<div class="container">
-    <header>
-        <h1 id="site-title">🐍 파이썬 프로그래밍 실습실</h1>
-        <button class="admin-toggle" onclick="toggleAdmin()">⚙ 선생님 화면</button>
-    </header>
-    <div class="student-info">
-        <input type="text" id="student-id" placeholder="학번 (예: 10101)" onchange="saveStudentContext()">
-        <input type="text" id="student-name" placeholder="이름 (예: 홍길동)" onchange="saveStudentContext()">
-        <span style="font-size: 12px; color: #666; align-self: center;">* 학번과 이름을 정확히 적어야 실습 결과가 기록됩니다.</span>
-    </div>
-    <div class="navigation">
-        <button class="nav-btn" id="btn-prev" onclick="moveQuestion(-1)">◀ 이전 문항</button>
-        <div>
-            <select id="question-select" onchange="selectQuestion(this.value)"></select>
+<header>
+  <div class="wrap">
+    <div class="hrow">
+      <div class="led" id="led" aria-hidden="true"></div>
+      <div class="htext">
+        <h1 id="siteTitle">파이썬 기본 문법 실습</h1>
+        <div class="stu" aria-label="학생 정보">
+          <input type="text" id="stuId" placeholder="학번" aria-label="학번" autocomplete="off" inputmode="numeric">
+          <input type="text" id="stuName" placeholder="이름" aria-label="이름" autocomplete="off">
+          <div class="badges" id="badges" aria-label="문항별 통과 현황"></div>
+          <button id="btnSubmitResult" class="submitbtn" type="button">📤 결과 제출</button>
         </div>
-        <button class="nav-btn" id="btn-next" onclick="moveQuestion(1)">다음 문항 ▶</button>
+      </div>
+      <div class="hright">
+        <span class="status on" id="status">코드 입력 대기</span>
+        <button id="btnEdit" class="gear" type="button" title="선생님 설정" aria-label="선생님 설정">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor" aria-hidden="true"><path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58a.49.49 0 0 0 .12-.61l-1.92-3.32a.488.488 0 0 0-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54a.484.484 0 0 0-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58a.49.49 0 0 0-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/></svg>
+        </button>
+      </div>
     </div>
-    <div class="mission-card">
-        <span id="mission-level" class="badge 기초">기초</span>
-        <h2 id="mission-title" style="font-size: 18px; margin-bottom: 15px;">문항 로딩 중...</h2>
-        <div class="section-title">🎯 미션 설명</div>
-        <div id="mission-desc" class="text-box">설명이 들어가는 자리입니다.</div>
-        <div class="section-title">📘 성취기준</div>
-        <div id="mission-standard" class="text-box" style="color: #555;">성취기준 정보</div>
-        <div class="section-title">🚀 성취 기대</div>
-        <div id="mission-expectation" class="text-box" style="color: #555;">성취 기대 효과</div>
-        <div class="section-title">📋 해결 순서</div>
-        <div class="text-box"><ul id="mission-steps" class="steps-list"></ul></div>
+  </div>
+</header>
+
+<nav class="qnav" aria-label="문항 선택">
+  <div class="wrap">
+    <div class="qbar"><b>📚 문항 목록</b><span id="qbarNow"></span><button id="btnChips" type="button" aria-expanded="false" aria-controls="chips">▼ 문항 목록 펼치기</button></div>
+    <div class="chips" id="chips"></div>
+  </div>
+</nav>
+
+<main class="wrap">
+  <div class="grid">
+    <!-- 좌: 학생 정보 + 문항 -->
+    <div>
+      <section class="card">
+        <div class="mission">
+          <h3>🎯 미션 설명 <span class="level" id="qLevel"></span></h3>
+          <p id="qTitle" style="font-weight:700;margin:4px 0"></p>
+          <p id="qDesc" class="muted" style="margin:0 0 8px"></p>
+          <b>성취기준</b>
+          <p id="qStd" class="muted" style="margin:2px 0 8px"></p>
+          <b>성취 기대</b>
+          <p id="qExp" class="muted" style="margin:2px 0 8px"></p>
+          <b>해결 순서</b>
+          <ol id="qSteps"></ol>
+        </div>
+        <div style="margin-top:12px"><details open style="border:1px solid #cfd8e6;border-radius:10px;padding:8px 10px"><summary style="cursor:pointer"><b>💡 실습 방법</b></summary><ol class="note" style="margin:6px 0 0 18px;padding:0"><li>Google Colab(또는 VS Code)에서 코드를 작성·실행해 결과를 확인합니다.</li><li>확인한 코드를 아래 입력창에 붙여넣고 [제출하고 자동 채점]을 누릅니다.</li><li>문항을 푼 뒤 맨 위 [결과 제출]을 누르면 선생님 구글 시트로 전달돼요.</li></ol></details></div>
+        <div class="row" style="margin-top:12px;justify-content:space-between">
+          <button id="btnPrev">◀ 이전 문항</button>
+          <button id="btnNext">다음 문항 ▶</button>
+        </div>
+        <div class="row" style="gap:18px;margin-top:12px">
+          <div class="stat" style="flex:1">이 문항 제출 횟수<b id="qTry">0회</b><span>제출할 때마다 누적돼요.</span></div>
+          <div class="stat" style="flex:1">완성까지<b id="qFirst">아직 미완성</b><span>처음 통과한 제출 횟수를 기록해요.</span></div>
+        </div>
+      </section>
     </div>
-    <div class="editor-section">
-        <div class="section-title">💻 파이썬 코드 작성 구역</div>
-        <textarea id="code-editor" placeholder="# 이곳에 파이썬 코드를 작성하세요.&#10;# 필수 명령어 블록 포함 여부를 검사합니다." oninput="trackDraft()"></textarea>
+
+    <!-- 우: 편집기 + 채점 -->
+    <div>
+      <section class="card">
+        <label for="codeBox" style="margin-top:0">✏️ 파이썬 코드 (직접 입력하세요. Colab 코드를 붙여넣어도 돼요)</label>
+        <div id="edWrap" style="display:flex;border:1px solid #cfd8e6;border-radius:8px;overflow:hidden;background:#fff">
+          <pre id="lineNo" aria-hidden="true" style="margin:0;padding:10px 8px;min-width:38px;text-align:right;background:#f1f5f9;color:#94a3b8;font:14px/1.55 ui-monospace,Consolas,monospace;height:360px;overflow:hidden;user-select:none;box-sizing:border-box">1</pre>
+          <textarea id="codeBox" spellcheck="false" autocapitalize="off" autocomplete="off" autocorrect="off" wrap="off" style="flex:1;border:0;outline:0;resize:none;margin:0;padding:10px;height:360px;box-sizing:border-box;font:14px/1.55 ui-monospace,Consolas,monospace;tab-size:4;white-space:pre;overflow:auto;background:#fff;color:#0f172a"></textarea>
+        </div>
+        <div class="row" style="margin-top:12px">
+          <button id="btnSubmit" class="primary">✔ 제출하고 자동 채점</button>
+          <button id="btnTpl">📄 기본 틀</button>
+          <button id="btnClearBlocks">🧹 코드 지우기</button>
+          <button id="btnReload">🌐 Google Colab 열기</button>
+        </div>
+        <p id="clearMsg" class="note" role="status"></p>
+        <p class="note">* 주석(#)을 뺀 실제 코드에 필요한 문법 요소가 들어 있는지 검사합니다. 실행 결과는 Colab 등에서 직접 확인하세요.</p>
+        <div class="result" id="result"></div>
+        <ul class="checks" id="checks"></ul>
+      </section>
     </div>
-    <div class="status-bar">
-        <div>이 문항 제출 횟수: <span id="submit-count" style="font-weight: bold; color: var(--primary-color);">0</span>회</div>
-        <div>완성 여부: <span id="completion-status" class="status-badge incomplete">아직 미완성</span></div>
-    </div>
-    <div class="action-buttons">
-        <button class="btn btn-submit" onclick="validateAndSubmit()">📤 제출하고 자동 채점</button>
-        <button class="btn btn-clear" onclick="clearEditor()">🧹 블록 모두 지우기</button>
-        <button class="btn btn-refresh" onclick="resetEditorToDefault()">⟳ 편집기 새로고침</button>
-    </div>
-    <div class="admin-panel" id="admin-panel">
-        <h3 style="margin-bottom: 10px; color: #2c3e50;">👩‍🏫 선생님 전용 서버 연동 설정</h3>
-        <p style="font-size: 13px; color: #666; margin-bottom: 15px;">Apps Script 웹 앱 주소를 붙여넣고 아래 적용 버튼을 누르세요.</p>
-        <label style="font-weight: bold; font-size: 14px;">구글 앱스 스크립트 주소 (URL):</label>
-        <input type="text" id="web-app-url" placeholder="https://google.com">
-        <button class="nav-btn" onclick="saveAdminSettings()" style="background: #28a745;">🚀 학생 시스템에 주소 적용하기</button>
-    </div>
+  </div>
+</main>
+
+<div id="toast" class="toast hidden" role="status" aria-live="polite"></div>
+
+<!-- 선생님 화면: 미션 문구 편집 -->
+<div id="teacherScreen" class="tscreen hidden" role="dialog" aria-modal="true" aria-label="선생님 화면">
+  <div class="tbar">
+    <h2>👩‍🏫 선생님 화면 · 미션 문구 편집</h2>
+    <span id="tStatus" class="muted"></span>
+    <button id="tClose" class="primary">닫기 ✕</button>
+  </div>
+  <div class="tbody">
+    <aside class="tlist" id="tList" aria-label="문항 목록"></aside>
+    <section class="tform">
+      <p class="muted" style="margin-top:0">문구를 고친 뒤 <b>🚀 학생에게 적용하기</b>를 누르면 GitHub에 자동 저장돼요. 1~2분 뒤 학생들이 <b>F5</b>를 누르면 바뀐 문구가 보여요. (고치는 동안은 이 컴퓨터에만 임시 저장돼요)</p>
+      <div style="margin-bottom:14px;padding:12px;border:1px solid var(--line);border-radius:12px;background:#f8faff">
+        <label for="tSiteTitle" style="margin-top:0">🏷 사이트 제목 <span class="muted">(맨 위 제목 줄에 표시돼요)</span></label>
+        <input type="text" id="tSiteTitle" maxlength="40" autocomplete="off" placeholder="파이썬 기본 문법 실습">
+      </div>
+      <label for="tTitle">제목</label>
+      <input type="text" id="tTitle" maxlength="60" autocomplete="off">
+      <label for="tLevel">단계</label>
+      <select id="tLevel"><option>기초</option><option>중급</option><option>고급</option></select>
+      <label for="tDesc">미션 설명</label>
+      <textarea id="tDesc" rows="3" maxlength="600"></textarea>
+      <label for="tStd">성취기준</label>
+      <textarea id="tStd" rows="2" maxlength="300"></textarea>
+      <label for="tExp">성취 기대</label>
+      <textarea id="tExp" rows="2" maxlength="300"></textarea>
+      <label for="tSteps">해결 순서 <span class="muted">(한 줄에 한 단계)</span></label>
+      <textarea id="tSteps" rows="6"></textarea>
+      <div style="margin-top:12px">
+        <b style="font-size:.88rem">채점 항목 <span class="muted">(읽기 전용)</span></b>
+        <ul class="checks" id="tChecks"></ul>
+        <p class="note">채점 기준은 문구가 아니라 코드(<code>QUESTIONS</code>의 <code>checks</code>)에서 바꿀 수 있어요.</p>
+      </div>
+      <div style="margin-top:14px;padding:12px;border:1px solid var(--line);border-radius:12px;background:#f8faff">
+        <b>📥 결과 받을 곳 (구글 시트)</b>
+        <p class="note" style="margin-top:4px">학생이 <b>📤 결과 제출</b>을 누르면 이 주소로 보내져, 시트에 <b>학생 1명 = 1줄</b>로 엑셀처럼 정리돼요. 입력한 주소는 아래 <b>🚀 학생에게 적용하기</b>를 눌러야 학생들에게도 적용돼요.</p>
+        <label for="cUrl">Apps Script 웹 앱 주소 <span class="muted">(…/exec 로 끝나요)</span></label>
+        <input type="text" id="cUrl" autocomplete="off" placeholder="https://script.google.com/macros/s/…/exec">
+        <div class="row" style="margin-top:8px"><button id="cTest" type="button">🔌 연결 테스트</button></div>
+        <details class="note" style="margin-top:8px">
+          <summary><b>처음 한 번만: 시트 연결 방법 (5분)</b></summary>
+          <ol style="margin:6px 0 0 18px;padding:0">
+            <li>결과를 모을 구글 시트를 열고 <b>확장 프로그램 → Apps Script</b>를 누릅니다.</li>
+            <li>기본 코드를 모두 지우고, 아래 <b>코드 복사</b> 버튼으로 복사한 코드를 붙여넣은 뒤 저장(💾)합니다.</li>
+            <li><b>배포 → 새 배포 → 유형: 웹 앱</b>을 고르고, 실행 계정은 <b>나</b>, 액세스 권한은 <b>모든 사용자</b>로 한 뒤 <b>배포</b>합니다. (권한 승인 창이 뜨면 허용)</li>
+            <li>나온 <b>웹 앱 URL</b>을 위 주소 칸에 붙여넣고 <b>연결 테스트</b>를 눌러 확인합니다.</li>
+            <li>마지막으로 <b>🚀 학생에게 적용하기</b>를 누르면 끝이에요.</li>
+          </ol>
+          <div class="row" style="margin:8px 0 4px"><button id="gsCopy" type="button">📋 Apps Script 코드 복사</button></div>
+          <textarea id="gsCode" readonly rows="8" spellcheck="false">/**
+ * 파이썬 기본 문법 실습 결과 수집 (구글 시트 정리용)
+ *
+ * - 학생이 [결과 제출]을 누르면 '학생결과' 시트에 학생 1명 = 1줄로 정리돼요. (엑셀처럼 보기)
+ *   같은 학번+이름이 다시 제출하면 새 줄이 생기지 않고 그 줄이 최신 결과로 바뀌어요.
+ * - '제출기록' 시트에는 제출할 때마다 원본이 한 줄씩 남아요. (실수로 덮어써도 복구 가능)
+ * - 웹 앱으로 배포: 실행 계정 = 나 / 액세스 권한 = 모든 사용자
+ */
+const SPREADSHEET_ID = ""; // 이 시트에 기록해요. (시트에서 열었다면 비워 둬도 돼요: "")
+const RESULT_SHEET = "학생결과";
+const LOG_SHEET = "제출기록";
+const FIXED_COLS = 3; // 학번, 이름, 완성
+
+function doGet(e) {
+  const p = (e &amp;&amp; e.parameter) || {};
+  let out;
+  try {
+    const action = p.action || "ping";
+    if (action === "ping") out = { ok: true, message: "결과 수집 서버가 동작 중이에요.", time: now_() };
+    else if (action === "submit") out = submit_(p);
+    else out = { ok: false, error: "알 수 없는 요청이에요." };
+  } catch (err) {
+    out = { ok: false, error: String((err &amp;&amp; err.message) || err) };
+  }
+  return reply_(out, p.cb);
+}
+
+function reply_(obj, cb) {
+  const json = JSON.stringify(obj);
+  if (cb &amp;&amp; /^[A-Za-z_$][\w$]{0,60}$/.test(cb)) {
+    return ContentService.createTextOutput(cb + "(" + json + ");").setMimeType(ContentService.MimeType.JAVASCRIPT);
+  }
+  return ContentService.createTextOutput(json).setMimeType(ContentService.MimeType.JSON);
+}
+
+function now_() { return Utilities.formatDate(new Date(), "Asia/Seoul", "yyyy-MM-dd HH:mm:ss"); }
+function open_() { return SPREADSHEET_ID ? SpreadsheetApp.openById(SPREADSHEET_ID) : SpreadsheetApp.getActiveSpreadsheet(); }
+function clean_(v, max) { return String(v == null ? "" : v).replace(/[\u0000-\u001f\u007f]/g, " ").trim().slice(0, max); }
+function norm_(v) { return String(v == null ? "" : v).replace(/\s+/g, "").toLowerCase(); }
+
+// d = "통과(0/1),제출횟수,통과차수;" 를 문항 순서대로 이어 붙인 글자
+function parse_(d) {
+  const parts = String(d || "").split(";");
+  if (parts.length &lt; 1 || parts.length &gt; 60) throw new Error("결과 형식이 올바르지 않아요.");
+  return parts.map(function (t) {
+    const a = t.split(",").map(function (x) { return parseInt(x, 10); });
+    if (a.length !== 3 || a.some(function (n) { return isNaN(n) || n &lt; 0 || n &gt; 999; })) throw new Error("결과 형식이 올바르지 않아요.");
+    return { done: a[0] === 1, tries: a[1], first: a[2] };
+  });
+}
+
+function cell_(x) {
+  if (x.done) return { text: "✔ " + x.first + "회", bg: "#d9f2e3" };   // 통과 (몇 번째 제출에 통과했는지)
+  if (x.tries &gt; 0) return { text: "✘ " + x.tries + "회", bg: "#fde2e2" }; // 제출했지만 아직 미통과
+  return { text: "", bg: "#ffffff" };                                  // 아직 안 함
+}
+
+function getSheet_(ss, name) { return ss.getSheetByName(name) || ss.insertSheet(name); }
+
+function ensureHeader_(sh, n) {
+  const header = ["학번", "이름", "완성"];
+  for (let i = 1; i &lt;= n; i++) header.push(i + "번");
+  header.push("마지막 제출");
+  const cur = sh.getRange(1, 1, 1, header.length).getValues()[0];
+  if (JSON.stringify(cur) !== JSON.stringify(header)) {
+    sh.getRange(1, 1, 1, header.length).setValues([header]).setFontWeight("bold").setBackground("#e8f0ff");
+    sh.setFrozenRows(1);
+    sh.setFrozenColumns(2);
+  }
+}
+
+function submit_(p) {
+  const id = clean_(p.id, 20), name = clean_(p.name, 20);
+  if (!id || !name) throw new Error("학번과 이름이 필요해요.");
+  const items = parse_(p.d);
+  const n = items.length;
+
+  const lock = LockService.getScriptLock();
+  lock.waitLock(20000);
+  try {
+    const ss = open_();
+    const sh = getSheet_(ss, RESULT_SHEET);
+    ensureHeader_(sh, n);
+
+    // 같은 학번+이름이면 그 줄을 갱신, 없으면 새 줄 추가
+    const key = norm_(id) + "|" + norm_(name);
+    const last = sh.getLastRow();
+    let row = -1;
+    if (last &gt; 1) {
+      const vals = sh.getRange(2, 1, last - 1, 2).getValues();
+      for (let i = 0; i &lt; vals.length; i++) {
+        if (norm_(vals[i][0]) + "|" + norm_(vals[i][1]) === key) { row = i + 2; break; }
+      }
+    }
+    const isNew = row &lt; 0;
+    if (isNew) row = last + 1;
+
+    const cells = items.map(cell_);
+    const doneN = items.filter(function (x) { return x.done; }).length;
+    const time = now_();
+    const line = [id, name, doneN].concat(cells.map(function (c) { return c.text; })).concat([time]);
+
+    sh.getRange(row, 1, 1, 2).setNumberFormat("@");            // 학번·이름은 글자로 저장 (앞자리 0 보존, 수식 방지)
+    sh.getRange(row, 1, 1, line.length).setValues([line]);
+    sh.getRange(row, FIXED_COLS + 1, 1, n).setBackgrounds([cells.map(function (c) { return c.bg; })]);
+    if (isNew &amp;&amp; sh.getLastRow() &gt; 2) {
+      sh.getRange(2, 1, sh.getLastRow() - 1, line.length).sort({ column: 1, ascending: true }); // 새 학생이 추가되면 학번 순으로 정렬
+    }
+
+    // 제출기록(원본) 한 줄 추가
+    const lg = getSheet_(ss, LOG_SHEET);
+    if (lg.getLastRow() === 0) {
+      lg.getRange(1, 1, 1, 5).setValues([["제출시각", "학번", "이름", "완성", "결과(원본)"]]).setFontWeight("bold").setBackground("#f1f5fc");
+      lg.setFrozenRows(1);
+    }
+    const r = lg.getLastRow() + 1;
+    lg.getRange(r, 1, 1, 5).setNumberFormat("@").setValues([[time, id, name, String(doneN), String(p.d)]]);
+
+    return { ok: true, updated: !isNew, doneCount: doneN, total: n, time: time };
+  } finally {
+    lock.releaseLock();
+  }
+}
+</textarea>
+          <p class="note">· 코드 맨 위 <code>SPREADSHEET_ID</code>가 결과를 기록할 시트예요. 다른 시트에 모으려면 그 시트의 ID로 바꾸거나 <code>""</code>(빈 글자)로 두세요. (빈 글자면 Apps Script를 연 그 시트에 기록돼요)<br>
+          · 결과는 <b>학생결과</b>(1명 1줄)와 <b>제출기록</b>(제출할 때마다 원본 1줄) 시트에 쌓여요.<br>
+          · 액세스 권한에 ‘모든 사용자’가 보이지 않으면(학교 계정 정책) 개인 구글 계정으로 만든 시트에서 진행해 주세요.<br>
+          · 코드를 고쳐 다시 배포할 때는 <b>배포 관리 → 수정 → 새 버전</b>으로 해야 주소가 바뀌지 않아요.</p>
+        </details>
+      </div>
+      <div style="margin-top:14px;padding:12px;border:1px solid var(--line);border-radius:12px;background:#f8faff">
+        <div class="row">
+          <button id="tPublish" class="primary">🚀 학생에게 적용하기</button>
+          <span class="muted">누르면 GitHub에 자동 저장 · 파일을 직접 올릴 필요 없어요</span>
+        </div>
+        <details id="pubSetup" class="note" style="margin-top:8px">
+          <summary><b>처음 한 번만 설정 (저장소·토큰)</b></summary>
+          <div style="margin-top:6px">
+            <label for="pRepo">GitHub 저장소 <span class="muted">(예: 내아이디/저장소이름)</span></label>
+            <input type="text" id="pRepo" autocomplete="off" placeholder="내아이디/저장소이름">
+            <div class="row" style="margin-top:4px">
+              <div style="flex:1;min-width:140px"><label for="pBranch">브랜치</label><input type="text" id="pBranch" autocomplete="off" placeholder="main"></div>
+              <div style="flex:2;min-width:200px"><label for="pPath">파일 위치 <span class="muted">(index.html과 같은 폴더)</span></label><input type="text" id="pPath" autocomplete="off" placeholder="missions.json"></div>
+            </div>
+            <label for="pToken">토큰 <span class="muted">(이 컴퓨터 브라우저에만 저장돼요 · 학생 컴퓨터에서는 입력하지 마세요)</span></label>
+            <input type="password" id="pToken" autocomplete="off" placeholder="github_pat_...">
+            <div class="row" style="margin-top:8px">
+              <button id="pSave" class="primary">설정 저장</button>
+              <button id="pClear" class="danger">설정·토큰 지우기</button>
+            </div>
+            <p class="note"><b>토큰 만드는 방법</b></p>
+            <ol class="note" style="margin:0 0 0 18px;padding:0">
+              <li>GitHub 로그인 → 오른쪽 위 프로필 → <b>Settings</b> → 맨 아래 <b>Developer settings</b></li>
+              <li><b>Personal access tokens → Fine-grained tokens → Generate new token</b></li>
+              <li><b>Expiration</b>은 90일 정도로, <b>Repository access</b>는 <b>Only select repositories</b>에서 이 저장소만 고릅니다.</li>
+              <li><b>Permissions → Repository permissions → Contents</b>를 <b>Read and write</b>로 바꿉니다.</li>
+              <li><b>Generate token</b> 후 나온 <b>github_pat_…</b> 글자를 위 토큰 칸에 붙여넣고 <b>설정 저장</b>을 누릅니다. (토큰은 이 화면에서만 보이니 한 번 복사해 두세요)</li>
+            </ol>
+          </div>
+        </details>
+      </div>
+      <div class="row" style="margin-top:14px">
+        <button id="tExport">⬇ missions.json 내려받기 <span class="muted">(직접 올릴 때)</span></button>
+        <button id="tImportBtn">⬆ missions.json 불러오기</button>
+        <input type="file" id="tImportFile" accept=".json,application/json" class="hidden">
+        <button id="tResetOne">이 문항 처음 상태로</button>
+        <button id="tClearDraft" class="danger">이 기기 수정본 지우기</button>
+      </div>
+      <p id="tMsg" class="note" role="status"></p>
+    </section>
+  </div>
 </div>
+
 <script>
+/* ============ 설정 ============ */
+const TEACHER_PASSWORD = "1234";          // ← 교사용 비밀번호를 바꿔 쓰세요
+const STORE = "py_grader_v1";
 
-    // --- 3단원 교육과정 성취기준 기반 문항 DB ---
-    const QUESTIONS = [
-        {
-            "id": 1, "chapter": "1차시: 반가워, 파이썬!", "level": "기초", "title": "첫 메시지 출력하기",
-            "description": "print() 함수를 사용하여 화면에 'Hello, Python!'이라는 문장을 정확하게 출력해 보세요.",
-            "standard": "[12정03-03] 프로그래밍 언어의 변수, 자료형, 연산자를 활용하여 데이터를 처리하는 코드를 작성한다.",
-            "expectation": "출력 함수 print()의 구조를 완벽히 이해하고 문자열 데이터를 처리할 수 있다.",
-            "steps": ["1단계: 소문자로 print() 함수를 작성합니다.", "2단계: 괄호 안에 문자열 구분 기호(따옴표)를 넣습니다.", "3단계: 문자열 내부에 Hello, Python! 문구를 입력합니다."],
-            "checks": ["print", "Hello, Python!"]
-        },
-        {
-            "id": 2, "chapter": "1차시: 반가워, 파이썬!", "level": "기초", "title": "나만의 다중행 출력",
-            "description": "print() 함수를 연속으로 두 번 사용하여 첫 줄에는 이름, 둘째 줄에는 자신의 컴퓨터공학 관심 분야를 출력해 보세요.",
-            "standard": "[12정03-03] 프로그래밍 언어의 변수, 자료형, 연산자를 활용하여 데이터를 처리하는 코드를 작성한다.",
-            "expectation": "개행 제어 구조를 파악하고 코드의 순차적 동작 흐름을 경험한다.",
-            "steps": ["1단계: 첫 번째 줄에 print()문으로 이름을 적습니다.", "2단계: 두 번째 줄에 또 다른 print()문으로 관심 분야를 적습니다."],
-            "checks": ["print"]
-        },
-        {
-            "id": 3, "chapter": "1차시: 반가워, 파이썬!", "level": "기초", "title": "코드 안에 주석 남기기",
-            "description": "컴퓨터가 해석하지 않는 주석 기호(#)를 달고 바로 오른쪽에 '테스트 완료'를 적어보세요.",
-            "standard": "[12정03-07] 프로그램 개발 과정에서 발생하는 오류(Syntax/런타임/논리 오류)를 디버깅하여 수정한다.",
-            "expectation": "디버깅 시 예외 코드 관리와 주석 처리 기법을 교습한다.",
-            "steps": ["1단계: # 기호를 맨 앞에 적습니다.", "2단계: '테스트 완료' 글자를 작성합니다."],
-            "checks": ["#", "테스트 완료"]
-        },
-        {
-            "id": 4, "chapter": "2차시: 변수와 자료형", "level": "기초", "title": "정수 변수 할당하기",
-            "description": "변수 `age`를 생성한 후 본인의 나이에 해당하는 숫자를 대입(=)하고 출력하는 코드를 완성하세요.",
-            "standard": "[12정03-03] 프로그래밍 언어의 변수, 자료형, 연산자를 활용하여 데이터를 처리하는 코드를 작성한다.",
-            "expectation": "할당 연산자(=)와 정수 변수의 수치 보존 매커니즘을 배운다.",
-            "steps": ["1단계: age = 숫자를 선언합니다.", "2단계: print(age) 구문으로 출력 상태를 검증합니다."],
-            "checks": ["age", "=", "print"]
-        },
-        {
-            "id": 13, "chapter": "5차시: 조건문(if-else)", "level": "중급", "title": "성인 판별 조건문",
-            "description": "변수 `user_age`가 20 이상이면 '성인입니다', 미만이면 '미성년자입니다'를 출력하도록 if-else 문을 작성하세요.",
-            "standard": "[12정03-04] 제어구조(선택, 반복)를 활용하여 논리적인 흐름을 제어하는 프로그램을 구현한다.",
-            "expectation": "분기 구조 연산법과 제어 흐름 설계 능력을 함양한다.",
-            "steps": ["1단계: if user_age >= 20: 형태로 제어 헤더를 정의합니다.", "2단계: 들여쓰기 후 else: 구조를 연결합니다."],
-            "checks": ["if", ">=", "else:", "print"]
-        },
-        {
-            "id": 19, "chapter": "7차시: 반복문(for)", "level": "중급", "title": "지정 횟수 자동 반복",
-            "description": "for문 및 range() 함수를 사용하여 '파이썬 최고!'를 화면에 5번 출력시키는 코드를 작성하세요.",
-            "standard": "[12정03-04] 제어구조(선택, 반복)를 활용하여 논리적인 흐름을 제어하는 프로그램을 구현한다.",
-            "expectation": "반복 수치 제어 구조의 인자 제어 방식을 마스터한다.",
-            "steps": ["1단계: for i in range(5): 루프 블록을 설계합니다.", "2단계: 루프 내부 실행 명령어로 print 함수를 매핑합니다."],
-            "checks": ["for", "in", "range", "print"]
-        }
-    ];
+/* ============ 문항 (필요한 코드 조각을 정규식으로 검사) ============ */
+const c=(label,re)=>({label,re});
+const Q=(n,level,title,desc,std,exp,steps,checks)=>({id:"Q"+n,level,title,desc,std,exp,steps:steps.split("|"),checks});
+const QUESTIONS=[
+Q(1,"기초","[1차시] 첫 인사 출력하기","print()로 Hello, Python! 을 화면에 출력하세요.","[12정03-03] 프로그래밍 언어의 변수, 자료형, 연산자를 활용하여 데이터를 처리하는 코드를 작성한다.","print() 함수로 결과를 출력할 수 있다.","print( ) 입력|괄호 안에 따옴표로 문장 쓰기|실행해 결과 확인",[c("print()로 출력",/print\s*\(/),c("Hello, Python! 출력",/print\s*\(\s*([\"'])Hello, Python!\1\s*\)/)]),
+Q(2,"중급","[1차시] 나를 소개하는 3줄","print()를 3번 사용해 이름·학교·좋아하는 것을 세 줄로 출력하세요.","[12정03-03] 프로그래밍 언어의 변수, 자료형, 연산자를 활용하여 데이터를 처리하는 코드를 작성한다.","print() 함수로 결과를 출력할 수 있다.","print() 3줄 작성|각 줄에 문자열 쓰기|실행해 확인",[c("print() 3번 이상",/print\s*\([\s\S]*print\s*\([\s\S]*print\s*\(/),c("문자열 출력",/print\s*\(\s*[\"']/)]),
+Q(3,"고급","[1차시] sep과 end 활용하기","print(\"2025\", \"03\", \"01\", sep=\"-\")처럼 sep으로 날짜를 만들고, end=\"\"로 줄바꿈 없이 이어 출력하세요.","[12정03-03] 프로그래밍 언어의 변수, 자료형, 연산자를 활용하여 데이터를 처리하는 코드를 작성한다.","print() 함수로 결과를 출력할 수 있다.","sep 인자 사용|end 인자 사용|출력 모양 비교",[c("print()로 출력",/print\s*\(/),c("sep 사용",/sep\s*=\s*[\"']/),c("end 사용",/end\s*=\s*[\"']/)]),
+Q(4,"기초","[2차시] 변수에 값 저장하기","name에 문자열, age에 정수를 저장하고 print()로 함께 출력하세요.","[12정03-03] 프로그래밍 언어의 변수, 자료형, 연산자를 활용하여 데이터를 처리하는 코드를 작성한다.","변수와 자료형(정수·실수·문자열)을 구분하고 활용할 수 있다.","name = 문자열|age = 정수|print(name, age)",[c("문자열 변수 name",/^\s*name\s*=\s*[\"']/m),c("정수 변수 age",/^\s*age\s*=\s*\d+\s*$/m),c("name, age 출력",/print\s*\([^)]*name[^)]*age/)]),
+Q(5,"중급","[2차시] 자료형 확인하기","정수·실수·문자열·참거짓 변수를 만들고 type()으로 자료형을 출력하세요.","[12정03-03] 프로그래밍 언어의 변수, 자료형, 연산자를 활용하여 데이터를 처리하는 코드를 작성한다.","변수와 자료형(정수·실수·문자열)을 구분하고 활용할 수 있다.","변수 4개 만들기|type(변수) 사용|print로 출력",[c("실수(소수) 값",/=\s*\d+\.\d+/),c("문자열 값",/=\s*[\"']/),c("참거짓(True/False)",/=\s*(True|False)\b/),c("type() 사용",/type\s*\(/)]),
+Q(6,"고급","[2차시] 형변환 하기","문자열 \"10\"과 \"20\"을 int()로 바꿔 더한 값을 출력하고, 3.7을 int()와 str()로 각각 바꿔 출력하세요.","[12정03-03] 프로그래밍 언어의 변수, 자료형, 연산자를 활용하여 데이터를 처리하는 코드를 작성한다.","변수와 자료형(정수·실수·문자열)을 구분하고 활용할 수 있다.","문자열 숫자 만들기|int()로 변환 후 더하기|3.7을 int(), str()로 변환",[c("문자열 \"10\", \"20\"",/[\"']10[\"'][\s\S]*[\"']20[\"']/),c("int() 변환",/\bint\s*\(/),c("str() 변환",/\bstr\s*\(/),c("print()로 출력",/print\s*\(/)]),
+Q(7,"기초","[3차시] 사칙연산 계산하기","17과 5로 +, -, *, / 연산을 모두 해서 결과를 출력하세요.","[12정03-03] 프로그래밍 언어의 변수, 자료형, 연산자를 활용하여 데이터를 처리하는 코드를 작성한다.","연산자와 input()으로 데이터를 입력받아 처리할 수 있다.","두 수 정하기|네 가지 연산 작성|print로 출력",[c("+ 연산자 사용",/\w\s*\+\s*\w/),c("- 연산자 사용",/\w\s*-\s*\w/),c("* 연산자 사용",/\w\s*\*\s*\w/),c("/ 연산자 사용",/\w\s*\/\s*\w/),c("print()로 출력",/print\s*\(/)]),
+Q(8,"중급","[3차시] 몫·나머지·거듭제곱","17을 5로 나눈 몫(//)과 나머지(%), 2의 10제곱(**)을 출력하세요.","[12정03-03] 프로그래밍 언어의 변수, 자료형, 연산자를 활용하여 데이터를 처리하는 코드를 작성한다.","연산자와 input()으로 데이터를 입력받아 처리할 수 있다.","// 로 몫|% 로 나머지|** 로 거듭제곱",[c("// 연산자 사용",/\/\//),c("% 연산자 사용",/\w\s*%\s*\w/),c("** 연산자 사용",/\*\*/),c("print()로 출력",/print\s*\(/)]),
+Q(9,"고급","[3차시] 입력받아 두 배 만들기","input()으로 숫자를 입력받아 int()로 바꾼 뒤 2배한 값을 출력하세요.","[12정03-03] 프로그래밍 언어의 변수, 자료형, 연산자를 활용하여 데이터를 처리하는 코드를 작성한다.","연산자와 input()으로 데이터를 입력받아 처리할 수 있다.","input()으로 입력받기|int()로 형변환|2를 곱해 print",[c("input() 사용",/input\s*\(/),c("int()로 형변환",/\bint\s*\(/),c("2배 계산",/\*\s*2|2\s*\*/),c("print()로 출력",/print\s*\(/)]),
+Q(10,"기초","[4차시] 이름과 나이 입력받기","이름과 나이를 input()으로 입력받아 '○○님은 ○살입니다'처럼 출력하세요.","[12정03-03] 프로그래밍 언어의 변수, 자료형, 연산자를 활용하여 데이터를 처리하는 코드를 작성한다.","배운 문법을 종합해 입력-처리-출력 프로그램을 만들 수 있다.","input() 2번|변수에 저장|print로 출력",[c("input() 2번 이상",/input\s*\([\s\S]*input\s*\(/),c("변수에 입력값 저장",/\w+\s*=\s*input/),c("print()로 출력",/print\s*\(/)]),
+Q(11,"중급","[4차시] 내년 나이 계산하기","나이를 입력받아 int()로 바꾸고, 이름과 내년 나이를 함께 출력하세요.","[12정03-03] 프로그래밍 언어의 변수, 자료형, 연산자를 활용하여 데이터를 처리하는 코드를 작성한다.","배운 문법을 종합해 입력-처리-출력 프로그램을 만들 수 있다.","이름·나이 입력|int(나이) + 1|프로필 출력",[c("input() 2번 이상",/input\s*\([\s\S]*input\s*\(/),c("int() 변환",/\bint\s*\(/),c("+ 1 계산",/\+\s*1/),c("print()로 출력",/print\s*\(/)]),
+Q(12,"고급","[4차시] 사칙연산 계산기","두 수를 입력받아 합·차·곱·몫(/)을 모두 출력하세요.","[12정03-03] 프로그래밍 언어의 변수, 자료형, 연산자를 활용하여 데이터를 처리하는 코드를 작성한다.","배운 문법을 종합해 입력-처리-출력 프로그램을 만들 수 있다.","두 수 입력 후 변환|네 가지 계산|결과 출력",[c("input() 2번 이상",/input\s*\([\s\S]*input\s*\(/),c("int() 또는 float() 변환",/(int|float)\s*\([\s\S]*(int|float)\s*\(/),c("사칙연산 4가지 사용",/^(?=[\s\S]*\+)(?=[\s\S]*-)(?=[\s\S]*\*)(?=[\s\S]*\w\s*\/\s*\w)/),c("print()로 출력",/print\s*\(/)]),
+Q(13,"기초","[5차시] 성인/미성년자 구분","나이를 입력받아 19세 이상이면 '성인', 아니면 '미성년자'를 출력하세요.","[12정03-04] 제어구조(선택, 반복)를 활용하여 논리적인 흐름을 제어하는 프로그램을 구현한다.","비교·논리 연산자와 if-else로 실행 흐름을 나눌 수 있다.","input + int 변환|if 나이 >= 19:|else: 미성년자",[c("input() 사용",/input\s*\(/),c("if 조건문 사용",/^\s*if\s[^\n]*:/m),c("else 사용",/^\s*else\s*:/m),c("비교 연산자 사용",/[<>]=?|[=!]=/)]),
+Q(14,"중급","[5차시] 짝수·홀수 판별","정수를 입력받아 짝수면 '짝수', 홀수면 '홀수'를 출력하세요.","[12정03-04] 제어구조(선택, 반복)를 활용하여 논리적인 흐름을 제어하는 프로그램을 구현한다.","비교·논리 연산자와 if-else로 실행 흐름을 나눌 수 있다.","정수 입력|나머지(% 2) 구하기|== 0 이면 짝수",[c("input() 사용",/input\s*\(/),c("% 2 사용",/%\s*2/),c("== 비교",/==/),c("if 조건문 사용",/^\s*if\s[^\n]*:/m),c("else 사용",/^\s*else\s*:/m)]),
+Q(15,"고급","[5차시] 로그인 확인하기","아이디와 비밀번호를 입력받아 둘 다 맞을 때만 '로그인 성공'을 출력하세요. (and 사용)","[12정03-04] 제어구조(선택, 반복)를 활용하여 논리적인 흐름을 제어하는 프로그램을 구현한다.","비교·논리 연산자와 if-else로 실행 흐름을 나눌 수 있다.","두 값 입력|and로 조건 연결|맞으면 성공, 아니면 실패",[c("input() 2번 이상",/input\s*\([\s\S]*input\s*\(/),c("and 사용",/\band\b/),c("== 비교 2번",/==[\s\S]*==/),c("if 조건문 사용",/^\s*if\s[^\n]*:/m),c("else 사용",/^\s*else\s*:/m)]),
+Q(16,"기초","[6차시] 점수 등급 나누기","점수가 90 이상 A, 80 이상 B, 70 이상 C, 그 외 F를 출력하세요.","[12정03-04] 제어구조(선택, 반복)를 활용하여 논리적인 흐름을 제어하는 프로그램을 구현한다.","elif로 여러 조건을 구분하는 프로그램을 작성할 수 있다.","점수 입력|if 90 이상|elif로 80, 70|else F",[c("input() 사용",/input\s*\(/),c("if 조건문 사용",/^\s*if\s[^\n]*:/m),c("elif 사용",/^\s*elif\s[^\n]*:/m),c("else 사용",/^\s*else\s*:/m)]),
+Q(17,"중급","[6차시] 신호등 판별","'red', 'yellow', 'green'을 입력받아 '정지', '주의', '출발'을 출력하고 그 외는 '잘못된 입력'을 출력하세요.","[12정03-04] 제어구조(선택, 반복)를 활용하여 논리적인 흐름을 제어하는 프로그램을 구현한다.","elif로 여러 조건을 구분하는 프로그램을 작성할 수 있다.","색 입력|if/elif/elif로 구분|else 처리",[c("input() 사용",/input\s*\(/),c("elif 2번 이상",/\belif\b[\s\S]*\belif\b/),c("== 비교",/==/),c("else 사용",/^\s*else\s*:/m)]),
+Q(18,"고급","[6차시] BMI 판정기","키(cm)와 몸무게(kg)를 입력받아 BMI를 계산하고 저체중(18.5 미만)·정상(23 미만)·과체중(25 미만)·비만으로 구분하세요.","[12정03-04] 제어구조(선택, 반복)를 활용하여 논리적인 흐름을 제어하는 프로그램을 구현한다.","elif로 여러 조건을 구분하는 프로그램을 작성할 수 있다.","키·몸무게 입력(float)|BMI = 몸무게 / (키/100)**2|elif로 구간 나누기",[c("input() 2번 이상",/input\s*\([\s\S]*input\s*\(/),c("float() 변환",/\bfloat\s*\(/),c("BMI 계산(/ 사용)",/\//),c("elif 2번 이상",/\belif\b[\s\S]*\belif\b/),c("else 사용",/^\s*else\s*:/m)]),
+Q(19,"기초","[7차시] 5번 반복하기","for와 range()로 '안녕'을 5번 출력하세요.","[12정03-04] 제어구조(선택, 반복)를 활용하여 논리적인 흐름을 제어하는 프로그램을 구현한다.","for와 range()로 지정한 횟수만큼 반복할 수 있다.","for i in range(5):|들여쓰기|print 작성",[c("for + range() 반복",/\bfor\s+\w+\s+in\s+range\s*\(/),c("print()로 출력",/print\s*\(/),c("들여쓰기 사용",/:[ \t]*\n[ \t]+\S/)]),
+Q(20,"중급","[7차시] 1부터 N까지의 합","N을 입력받아 for문으로 1부터 N까지의 합을 구해 출력하세요.","[12정03-04] 제어구조(선택, 반복)를 활용하여 논리적인 흐름을 제어하는 프로그램을 구현한다.","for와 range()로 지정한 횟수만큼 반복할 수 있다.","합 변수 0으로 시작|for로 1~N 반복|합에 누적",[c("input() 사용",/input\s*\(/),c("for + range() 반복",/\bfor\s+\w+\s+in\s+range\s*\(/),c("합 변수 0으로 시작",/\w+\s*=\s*0\s*$/m),c("값 누적",/\w+\s*\+=\s*\w+|\w+\s*=\s*\w+\s*\+\s*\w+/),c("print()로 출력",/print\s*\(/)]),
+Q(21,"고급","[7차시] 구구단 출력하기","단을 입력받아 그 단의 구구단을 '2 x 3 = 6' 형태로 출력하세요.","[12정03-04] 제어구조(선택, 반복)를 활용하여 논리적인 흐름을 제어하는 프로그램을 구현한다.","for와 range()로 지정한 횟수만큼 반복할 수 있다.","단 입력(int)|range(1, 10)|곱셈 결과 출력",[c("input() 사용",/input\s*\(/),c("range(1, 10) 사용",/range\s*\(\s*1\s*,\s*10\s*\)/),c("곱셈 사용",/\*/),c("print()로 출력",/print\s*\(/)]),
+Q(22,"기초","[8차시] 카운트다운","while문으로 5부터 1까지 출력한 뒤 '발사!'를 출력하세요.","[12정03-04] 제어구조(선택, 반복)를 활용하여 논리적인 흐름을 제어하는 프로그램을 구현한다.","while과 break로 조건에 따라 반복을 제어할 수 있다.","n = 5|while n > 0:|n -= 1",[c("while 반복문 사용",/^\s*while\s[^\n]*:/m),c("1씩 감소",/-=\s*1|=\s*\w+\s*-\s*1/),c("print 2번 이상",/print\s*\([\s\S]*print\s*\(/)]),
+Q(23,"중급","[8차시] 비밀번호 맞출 때까지","올바른 비밀번호를 입력할 때까지 계속 입력받고, 맞으면 '통과'를 출력하세요.","[12정03-04] 제어구조(선택, 반복)를 활용하여 논리적인 흐름을 제어하는 프로그램을 구현한다.","while과 break로 조건에 따라 반복을 제어할 수 있다.","while로 반복|반복 안에서 input|맞으면 종료",[c("while 반복문 사용",/^\s*while\s[^\n]*:/m),c("반복 안에서 input",/while[\s\S]*input\s*\(/),c("비교(== 또는 !=)",/[=!]=/),c("print()로 출력",/print\s*\(/)]),
+Q(24,"고급","[8차시] 0이 나올 때까지 합계","while True 안에서 숫자를 입력받아 더하다가 0을 입력하면 break로 빠져나와 합계를 출력하세요.","[12정03-04] 제어구조(선택, 반복)를 활용하여 논리적인 흐름을 제어하는 프로그램을 구현한다.","while과 break로 조건에 따라 반복을 제어할 수 있다.","while True:|입력 0이면 break|합계 누적 후 출력",[c("while True 사용",/while\s+True\s*:/),c("break 사용",/\bbreak\b/),c("input() 사용",/input\s*\(/),c("값 누적(+=)",/\+=/),c("print()로 출력",/print\s*\(/)]),
+Q(25,"기초","[9차시] 비밀 숫자 만들기","random 모듈로 1~100 사이의 정수를 만들어 변수에 저장하세요.","[12정03-04] 제어구조(선택, 반복)를 활용하여 논리적인 흐름을 제어하는 프로그램을 구현한다.","조건문과 반복문을 결합해 게임 로직을 구현할 수 있다.","import random|random.randint(1, 100)|변수에 저장",[c("random 모듈 불러오기",/import\s+random|from\s+random\s+import/),c("randint(1, 100) 사용",/randint\s*\(\s*1\s*,\s*100\s*\)/),c("변수에 저장",/\w+\s*=\s*(random\.)?randint/)]),
+Q(26,"중급","[9차시] UP·DOWN 힌트 주기","정답을 한 번 입력받아 정답보다 크면 DOWN, 작으면 UP, 같으면 '정답'을 출력하세요.","[12정03-04] 제어구조(선택, 반복)를 활용하여 논리적인 흐름을 제어하는 프로그램을 구현한다.","조건문과 반복문을 결합해 게임 로직을 구현할 수 있다.","비밀 숫자 만들기|추측 입력(int)|if / elif / else로 비교",[c("randint 사용",/randint\s*\(/),c("input() 사용",/input\s*\(/),c("if / elif / else 사용",/\bif\b[\s\S]*\belif\b[\s\S]*\belse\b/),c("UP·DOWN 출력",/[\"']UP[\"'][\s\S]*[\"']DOWN[\"']|[\"']DOWN[\"'][\s\S]*[\"']UP[\"']/)]),
+Q(27,"고급","[9차시] 업다운 게임 완성","정답을 맞힐 때까지 반복하고, 시도 횟수를 세어 마지막에 출력하세요.","[12정03-02] 문제 해결을 위한 최적의 알고리즘을 설계하고, 알고리즘의 효율성을 분석·평가한다.","조건문과 반복문을 결합해 게임 로직을 구현할 수 있다.","while로 반복|시도 횟수 count += 1|맞히면 break 후 횟수 출력",[c("randint 사용",/randint\s*\(/),c("while 반복문 사용",/^\s*while\s[^\n]*:/m),c("횟수 세기(+= 1)",/\+=\s*1/),c("break 또는 종료 조건",/\bbreak\b|while\s+\w+\s*!=/),c("if 조건문 사용",/^\s*if\s[^\n]*:/m)]),
+Q(28,"기초","[10차시] 리스트 만들고 꺼내기","과일 3개 이상의 리스트를 만들고 첫 번째와 마지막(-1) 요소를 출력하세요.","[12정03-05] 리스트, 딕셔너리 등 복합 자료구조를 활용하여 다양한 데이터를 효율적으로 관리하는 코드를 작성한다.","리스트의 인덱싱·슬라이싱·추가·삭제를 활용할 수 있다.","[ , , ] 리스트 만들기|인덱스 [0]|인덱스 [-1]",[c("요소 3개 이상 리스트",/=\s*\[[^\]]*,[^\]]*,[^\]]*\]/),c("인덱스 [0] 사용",/\w\s*\[\s*0\s*\]/),c("인덱스 [-1] 사용",/\[\s*-1\s*\]/),c("print()로 출력",/print\s*\(/)]),
+Q(29,"중급","[10차시] 리스트 슬라이싱","[10, 20, 30, 40, 50]에서 처음 세 개와 마지막 두 개를 슬라이싱으로 출력하세요.","[12정03-05] 리스트, 딕셔너리 등 복합 자료구조를 활용하여 다양한 데이터를 효율적으로 관리하는 코드를 작성한다.","리스트의 인덱싱·슬라이싱·추가·삭제를 활용할 수 있다.","리스트 만들기|[:3] 슬라이싱|[-2:] 슬라이싱",[c("리스트 만들기",/=\s*\[[^\]]+\]/),c("슬라이싱 2번 이상",/\[[^\]]*:[^\]]*\][\s\S]*\[[^\]]*:[^\]]*\]/),c("print()로 출력",/print\s*\(/)]),
+Q(30,"고급","[10차시] 추가·삭제·정렬","append(), remove()(또는 pop()), sort()를 모두 사용해 리스트를 바꾸고 최종 결과를 출력하세요.","[12정03-05] 리스트, 딕셔너리 등 복합 자료구조를 활용하여 다양한 데이터를 효율적으로 관리하는 코드를 작성한다.","리스트의 인덱싱·슬라이싱·추가·삭제를 활용할 수 있다.","리스트 만들기|append, remove/pop, sort 사용|print로 확인",[c("리스트 만들기",/=\s*\[[^\]]+\]/),c("append() 사용",/\.append\s*\(/),c("remove() 또는 pop()",/\.(remove|pop)\s*\(/),c("sort() 사용",/\.sort\s*\(|sorted\s*\(/),c("print()로 출력",/print\s*\(/)]),
+Q(31,"기초","[11차시] 딕셔너리 만들기","name, age, grade 키를 가진 딕셔너리를 만들고 name 값을 출력하세요.","[12정03-05] 리스트, 딕셔너리 등 복합 자료구조를 활용하여 다양한 데이터를 효율적으로 관리하는 코드를 작성한다.","키-값 구조의 딕셔너리로 데이터를 저장하고 찾을 수 있다.","{키: 값} 만들기|키 3개|dic[\"name\"] 출력",[c("키-값 3쌍 딕셔너리",/\{[^}]*:[^}]*,[^}]*:[^}]*,[^}]*:[^}]*\}/),c("키로 값 읽기",/\w+\s*\[\s*[\"']name[\"']\s*\]|\.get\s*\(/),c("print()로 출력",/print\s*\(/)]),
+Q(32,"중급","[11차시] 영어 단어장","단어장 딕셔너리에 단어 3개를 넣고, 영어 단어를 입력받아 뜻을 출력하세요. 없으면 '없는 단어'를 출력하세요.","[12정03-05] 리스트, 딕셔너리 등 복합 자료구조를 활용하여 다양한 데이터를 효율적으로 관리하는 코드를 작성한다.","키-값 구조의 딕셔너리로 데이터를 저장하고 찾을 수 있다.","딕셔너리 만들기|input으로 단어 입력|in 또는 get으로 찾기",[c("딕셔너리 만들기",/=\s*\{[^}]*:[^}]*\}/),c("input() 사용",/input\s*\(/),c("in 또는 get() 사용",/\bin\s+\w+\s*:|\.get\s*\(/),c("else 사용",/^\s*else\s*:/m)]),
+Q(33,"고급","[11차시] 딕셔너리 반복하기","이름-점수 딕셔너리에 새 항목을 추가하고, items()와 for문으로 모든 항목을 출력하세요.","[12정03-05] 리스트, 딕셔너리 등 복합 자료구조를 활용하여 다양한 데이터를 효율적으로 관리하는 코드를 작성한다.","키-값 구조의 딕셔너리로 데이터를 저장하고 찾을 수 있다.","딕셔너리 만들기|dic[키] = 값 으로 추가|for k, v in dic.items()",[c("딕셔너리 만들기",/=\s*\{[^}]*:[^}]*\}/),c("항목 추가",/\w+\s*\[[^\]]+\]\s*=\s*\S/),c("items() 사용",/\.items\s*\(\s*\)/),c("for문 사용",/\bfor\s+/),c("print()로 출력",/print\s*\(/)]),
+Q(34,"기초","[12차시] 인사 함수 만들기","def로 hello() 함수를 만들고, 함수 안에서 인사말을 출력한 뒤 호출하세요.","[12정03-06] 함수의 필요성을 이해하고, 모듈화를 통해 프로그램의 가독성과 재사용성을 높인다.","매개변수와 반환값이 있는 함수를 정의하고 호출할 수 있다.","def hello():|들여쓰기 후 print|hello() 호출",[c("def hello() 정의",/def\s+hello\s*\(\s*\)\s*:/),c("함수 안에서 print",/def\s+hello[\s\S]*print\s*\(/),c("hello() 호출",/^[ \t]*hello\s*\(\s*\)/m)]),
+Q(35,"중급","[12차시] 더하기 함수","두 수를 받아 합을 돌려주는 add(a, b) 함수를 만들고 결과를 출력하세요.","[12정03-06] 함수의 필요성을 이해하고, 모듈화를 통해 프로그램의 가독성과 재사용성을 높인다.","매개변수와 반환값이 있는 함수를 정의하고 호출할 수 있다.","def add(a, b):|return a + b|add(3, 5) 호출 후 출력",[c("add(a, b) 정의",/def\s+add\s*\(\s*\w+\s*,\s*\w+\s*\)\s*:/),c("return 사용",/return\s+\S/),c("add() 호출",/print\s*\(\s*add\s*\(|=\s*add\s*\(/),c("print()로 출력",/print\s*\(/)]),
+Q(36,"고급","[12차시] 최댓값 찾는 함수","리스트를 받아 최댓값을 돌려주는 my_max(nums) 함수를 내장 max() 없이 for문으로 만드세요.","[12정03-02] 문제 해결을 위한 최적의 알고리즘을 설계하고, 알고리즘의 효율성을 분석·평가한다.","매개변수와 반환값이 있는 함수를 정의하고 호출할 수 있다.","최댓값 변수 준비|for로 비교하며 갱신|return으로 돌려주기",[c("my_max(nums) 정의",/def\s+my_max\s*\(\s*\w+\s*\)\s*:/),c("for문 사용",/\bfor\s+/),c("크기 비교(if)",/\bif\s+[^:\n]*[<>]/),c("return 사용",/return\s+\S/),c("내장 max() 쓰지 않기",/^(?![\s\S]*[^\w.]max\s*\()/)]),
+Q(37,"기초","[13차시] 메뉴판 만들기","음료 이름과 가격을 담은 딕셔너리(3개 이상)를 만들고, items()로 메뉴판을 출력하세요.","[12정03-05] 리스트, 딕셔너리 등 복합 자료구조를 활용하여 다양한 데이터를 효율적으로 관리하는 코드를 작성한다.","리스트·딕셔너리·함수를 종합해 프로그램을 설계할 수 있다.","딕셔너리 만들기|for 이름, 가격 in 메뉴.items()|print로 출력",[c("음료 3개 이상 딕셔너리",/\{[^}]*:[^}]*,[^}]*:[^}]*,[^}]*:[^}]*\}/),c("items() 사용",/\.items\s*\(/),c("for문 사용",/\bfor\s+/),c("print()로 출력",/print\s*\(/)]),
+Q(38,"중급","[13차시] 가격 알려주는 함수","get_price(menu, name) 함수가 음료 가격을 돌려주고, 없는 음료는 0을 돌려주게 하세요.","[12정03-06] 함수의 필요성을 이해하고, 모듈화를 통해 프로그램의 가독성과 재사용성을 높인다.","리스트·딕셔너리·함수를 종합해 프로그램을 설계할 수 있다.","def get_price(menu, name):|in 또는 get으로 확인|return 가격 또는 0",[c("get_price 정의",/def\s+get_price\s*\(\s*\w+\s*,\s*\w+\s*\)\s*:/),c("return 2번 이상",/return\s+\S[\s\S]*return\s+\S/),c("딕셔너리 만들기",/=\s*\{[^}]*:[^}]*\}/),c("get_price() 호출",/=\s*get_price\s*\(|print\s*\(\s*get_price\s*\(/)]),
+Q(39,"고급","[13차시] 거스름돈 자판기 완성","메뉴를 선택하고 돈을 넣으면 거스름돈을 계산하세요. 돈이 부족하면 '금액 부족'을 출력하세요.","[12정03-08] 컴퓨팅 사고력에 기반하여 실생활의 복잡한 문제를 해결하는 프로젝트형 프로그램을 협력하여 구현한다.","리스트·딕셔너리·함수를 종합해 프로그램을 설계할 수 있다.","메뉴 딕셔너리·함수 준비|메뉴와 금액 입력|돈 - 가격 = 거스름돈, 부족하면 안내",[c("딕셔너리 만들기",/=\s*\{[^}]*:[^}]*\}/),c("함수(def) 정의",/\bdef\s+\w+\s*\(/),c("input() 2번 이상",/input\s*\([\s\S]*input\s*\(/),c("거스름돈 계산(빼기)",/\w+\s*-\s*\w+/),c("if 조건문 사용",/^\s*if\s[^\n]*:/m),c("else 사용",/^\s*else\s*:/m)]),
+Q(40,"기초","[14차시] 거북이로 사각형 그리기","turtle로 한 변이 100인 정사각형을 for문으로 그리세요.","[12정03-04] 제어구조(선택, 반복)를 활용하여 논리적인 흐름을 제어하는 프로그램을 구현한다.","반복문과 조건문으로 turtle 그래픽 패턴을 만들 수 있다.","import turtle|for 4번 반복|forward(100), left(90)",[c("turtle 불러오기",/import\s+turtle|from\s+turtle\s+import/),c("forward() 사용",/\b(forward|fd)\s*\(/),c("left() 또는 right()",/\b(left|right|lt|rt)\s*\(/),c("for + range() 반복",/\bfor\s+\w+\s+in\s+range\s*\(/)]),
+Q(41,"중급","[14차시] 정n각형 그리기","n을 입력받아 정n각형을 그리세요. (회전각 = 360 / n)","[12정03-04] 제어구조(선택, 반복)를 활용하여 논리적인 흐름을 제어하는 프로그램을 구현한다.","반복문과 조건문으로 turtle 그래픽 패턴을 만들 수 있다.","n 입력(int)|각도 = 360 / n|for n번 반복",[c("turtle 불러오기",/import\s+turtle|from\s+turtle\s+import/),c("input() 사용",/input\s*\(/),c("360 / n 계산",/360\s*\/\s*\w+/),c("for + range() 반복",/\bfor\s+\w+\s+in\s+range\s*\(/),c("forward() 사용",/\b(forward|fd)\s*\(/)]),
+Q(42,"고급","[14차시] 색깔 나선 패턴","for문 안에서 if/elif로 색을 바꿔 가며 나선(또는 원) 패턴을 그리세요.","[12정03-04] 제어구조(선택, 반복)를 활용하여 논리적인 흐름을 제어하는 프로그램을 구현한다.","반복문과 조건문으로 turtle 그래픽 패턴을 만들 수 있다.","반복 변수 i 사용|i에 따라 색 고르기|forward 길이를 늘리며 회전",[c("turtle 불러오기",/import\s+turtle|from\s+turtle\s+import/),c("for + range() 반복",/\bfor\s+\w+\s+in\s+range\s*\(/),c("색 지정(color)",/\.?(color|pencolor)\s*\(/),c("if / elif 사용",/\bif\b[\s\S]*\b(elif|else)\b/),c("forward() 사용",/\b(forward|fd)\s*\(/)]),
+Q(43,"기초","[15차시] 프로젝트 소개 화면","만들고 싶은 프로그램의 이름과 규칙을 print()로 3줄 이상 출력하는 시작 화면을 만드세요.","[12정03-01] 실생활과 다양한 학문 분야의 문제를 분석하여 핵심 요소를 추출하고 단순화하는 추상화 과정을 수행한다.","주제를 분석해 프로그램의 기능을 설계하고 구현할 수 있다.","주제 정하기(가위바위보·타자 연습 등)|입력·처리·출력 생각하기|시작 화면 출력",[c("print() 3번 이상",/print\s*\([\s\S]*print\s*\([\s\S]*print\s*\(/),c("문자열 출력",/print\s*\(\s*[\"']/)]),
+Q(44,"중급","[15차시] 핵심 기능 만들기","가위바위보·타자 연습·성적 관리 중 하나를 골라 input, 조건문, 반복문을 모두 쓴 핵심 기능을 작성하세요.","[12정03-04] 제어구조(선택, 반복)를 활용하여 논리적인 흐름을 제어하는 프로그램을 구현한다.","주제를 분석해 프로그램의 기능을 설계하고 구현할 수 있다.","입력 받기|조건으로 결과 판단|반복으로 여러 번 진행",[c("input() 사용",/input\s*\(/),c("if 조건문 사용",/^\s*if\s[^\n]*:/m),c("반복문(for/while)",/\b(for|while)\b[^\n]*:/),c("print()로 출력",/print\s*\(/),c("random·리스트·딕셔너리 활용",/random|\[|\{/)]),
+Q(45,"고급","[15차시] 입력값 검사하기","1~10 사이의 숫자가 입력될 때까지 while로 다시 입력받고, 오류가 나지 않도록 isdigit() 등으로 확인하세요.","[12정03-07] 프로그램 개발 과정에서 발생하는 오류(Syntax/런타임/논리 오류)를 디버깅하여 수정한다.","주제를 분석해 프로그램의 기능을 설계하고 구현할 수 있다.","while True로 반복|isdigit() 또는 범위 검사|올바르면 break",[c("while 반복문 사용",/^\s*while\s[^\n]*:/m),c("input() 사용",/input\s*\(/),c("입력 검사(isdigit·범위)",/isdigit\s*\(|\d+\s*<=\s*\w+\s*<=\s*\d+|>=\s*1/),c("break 사용",/\bbreak\b/),c("print()로 출력",/print\s*\(/)]),
+Q(46,"기초","[16차시] 기능을 함수로 나누기","프로젝트의 기능을 2개 이상의 함수로 나누고 각각 호출하세요.","[12정03-06] 함수의 필요성을 이해하고, 모듈화를 통해 프로그램의 가독성과 재사용성을 높인다.","모듈화와 디버깅으로 프로젝트를 완성하고 공유할 수 있다.","기능별 이름 정하기|def로 함수 2개|함수 호출",[c("함수(def) 2개 이상 정의",/\bdef\s+\w+\s*\([\s\S]*\bdef\s+\w+\s*\(/),c("함수 호출",/^[ \t]*\w+\s*\(.*\)\s*$/m),c("print()로 출력",/print\s*\(/)]),
+Q(47,"중급","[16차시] 기록 저장하고 보여주기","리스트나 딕셔너리에 점수·기록을 저장하고 for문으로 모두 출력하세요.","[12정03-05] 리스트, 딕셔너리 등 복합 자료구조를 활용하여 다양한 데이터를 효율적으로 관리하는 코드를 작성한다.","모듈화와 디버깅으로 프로젝트를 완성하고 공유할 수 있다.","리스트/딕셔너리 만들기|append 또는 키로 추가|for로 출력",[c("리스트 또는 딕셔너리",/=\s*\[[^\]]*\]|=\s*\{[^}]*\}/),c("추가 기능",/\.append\s*\(|\w+\s*\[[^\]]+\]\s*=\s*\S/),c("for문 사용",/\bfor\s+/),c("print()로 출력",/print\s*\(/)]),
+Q(48,"고급","[16차시] 나의 프로그램 완성","함수 2개 이상, 리스트 또는 딕셔너리, 반복문, 조건문, 입력을 모두 활용한 프로그램을 완성해 발표 준비를 하세요.","[12정03-08] 컴퓨팅 사고력에 기반하여 실생활의 복잡한 문제를 해결하는 프로젝트형 프로그램을 협력하여 구현한다.","모듈화와 디버깅으로 프로젝트를 완성하고 공유할 수 있다.","기능 설계 확인|함수·자료구조·제어구조 결합|실행해 오류 고치기(디버깅)",[c("함수(def) 2개 이상 정의",/\bdef\s+\w+\s*\([\s\S]*\bdef\s+\w+\s*\(/),c("리스트 또는 딕셔너리",/=\s*\[[^\]]*\]|=\s*\{[^}]*\}/),c("반복문(for/while)",/\b(for|while)\b[^\n]*:/),c("if 조건문 사용",/^\s*if\s[^\n]*:/m),c("input() 사용",/input\s*\(/)])
+];
 
-    let currentIndex = 0;
-    let studentScores = {};
+/* ============ 상태 ============ */
+let state = load();
+function load(){
+  try{ const s=JSON.parse(localStorage.getItem(STORE)); if(s&&s.q) return s; }catch(e){}
+  return {stuId:"",stuName:"",cur:0,q:{}};
+}
+function save(){ try{localStorage.setItem(STORE,JSON.stringify(state));}catch(e){} }
+function qs(id){ return state.q[id]||(state.q[id]={tries:0,first:0,done:false,last:null,code:""}); }
+const $=id=>document.getElementById(id);
 
-        // --- 화면 초기화 및 브라우저 로컬 저장소 동기화 로직 ---
-    window.onload = function() {
-        initScores();
-        loadStudentContext();
-        buildDropdown();
-        renderQuestion(0);
-        const savedUrl = localStorage.getItem("python_web_app_url");
-        if (savedUrl) document.getElementById("web-app-url").value = savedUrl;
-    };
+let editorCode="";
+const box=()=>$("codeBox");
+/* ============ 렌더링 ============ */
+function renderLed(){
+  const led=$("led"); led.innerHTML="";
+  for(let i=0;i<25;i++){const d=document.createElement("i"); led.appendChild(d);}
+  const heart=[1,3,5,6,7,8,9,11,12,13,17];
+  const ps=[1,3,5,6,7,8,9,11,12,13,17];
+  ps.forEach(i=>led.children[i].classList.add("on"));
+}
+function renderChips(){
+  const box=$("chips"); box.innerHTML="";
+  QUESTIONS.forEach((q,i)=>{
+    const b=document.createElement("button");
+    b.className="chip"+(i===state.cur?" active":"")+(qs(q.id).done?" done":"");
+    b.textContent=(i+1)+". "+q.title;
+    b.onclick=()=>{state.cur=i;save();renderAll();};
+    box.appendChild(b);
+  });
+}
+function renderQuestion(){
+  const q=QUESTIONS[state.cur], s=qs(q.id);
+  $("qLevel").textContent=q.level;
+  $("qTitle").textContent=q.title;
+  $("qDesc").textContent=q.desc;
+  $("qStd").textContent=q.std;
+  $("qExp").textContent=q.exp;
+  $("qSteps").innerHTML=q.steps.map(t=>"<li>"+esc(t)+"</li>").join("");
+  $("qTry").textContent=s.tries+"회";
+  $("qFirst").textContent=s.done?(s.first+"번째 제출"):"아직 미완성";
+  $("btnPrev").disabled=state.cur===0;
+  $("btnNext").disabled=state.cur===QUESTIONS.length-1;
+  showResult(s.last); box().value=s.code||"# 여기에 코드를 작성하세요\n"; window.refreshLines&&refreshLines(); setClearMsg("");
+}
+function showResult(last){
+  const r=$("result"), c=$("checks");
+  c.innerHTML=""; r.className="result";
+  if(!last){return;}
+  r.classList.add(last.pass?"pass":"fail");
+  r.textContent=last.pass?"🎉 통과! 필요한 블록이 모두 들어 있어요.":"아직 부족해요. 아래 빨간 항목을 확인해 보세요.";
+  last.items.forEach(it=>{
+    const li=document.createElement("li");
+    li.className=it.ok?"pass":"fail";
+    li.textContent=(it.ok?"✔ ":"✘ ")+it.label;
+    c.appendChild(li);
+  });
+}
+function renderBadges(){
+  const box=$("badges"); box.innerHTML="";
+  QUESTIONS.forEach((q,i)=>{
+    const done=qs(q.id).done;
+    const b=document.createElement("button");
+    b.type="button";
+    b.className="badge"+(done?" done":"")+(i===state.cur?" cur":"");
+    b.textContent=i+1;
+    b.title=`${i+1}번 ${q.title} — ${done?"통과":"미완성"}`;
+    b.setAttribute("aria-label",b.title);
+    b.onclick=()=>{state.cur=i;save();renderAll();};
+    box.appendChild(b);
+  });
+}
+function renderAll(){renderBadges();renderChips();renderQuestion();}
+function esc(s){return String(s).replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]));}
 
-    function initScores() {
-        QUESTIONS.forEach(q => {
-            studentScores[q.id] = { done: 0, tries: 0, first: 0 };
-        });
+/* ============ 채점 ============ */
+function grade(q,code){
+  // 복사·붙여넣기 때 섞이는 특수 문자를 먼저 정리해요.
+  code=code
+    .replace(/[\u00A0\u1680\u2000-\u200A\u202F\u205F\u3000]/g," ")  // 특수 공백 -> 일반 공백
+    .replace(/[\u200B-\u200D\u2060\uFEFF]/g,"")  // 보이지 않는 문자 제거
+    .replace(/[\u2018\u2019\u02BC]/g,"'")  // 곡선 작은따옴표
+    .replace(/[\u201C\u201D]/g,'"')  // 곡선 큰따옴표
+    .replace(/\uFF08/g,"(").replace(/\uFF09/g,")")  // 전각 괄호
+    .replace(/\r\n?/g,"\n");
+  // 한글 등 비영문 이름(함수·변수)도 인식되도록, ASCII가 아닌 글자는 'x'로 바꿔서 검사해요.
+  code=code.split("\n").map(l=>l.replace(/^((?:[^"'#]|"[^"]*"|'[^']*')*)#.*$/,"$1")).join("\n");
+  code=code.replace(/[^\x00-\x7F]/g,"x");
+  const items=q.checks.map(c=>({label:c.label, ok: c.test? !!c.test(code) : c.re.test(code)}));
+  return {pass:items.every(i=>i.ok),items};
+}
+/* ===== 코드 편집기 ===== */
+(function(){
+  const ta=$("codeBox"), ln=$("lineNo");
+  function nums(){const n=ta.value.split("\n").length;let t="";for(let i=1;i<=n;i++)t+=i+"\n";ln.textContent=t;ln.scrollTop=ta.scrollTop;}
+  window.refreshLines=nums;
+  ta.addEventListener("scroll",()=>{ln.scrollTop=ta.scrollTop;});
+  ta.addEventListener("input",nums);
+  function ins(t,back){
+    ta.focus();
+    if(!document.execCommand("insertText",false,t)){ta.setRangeText(t,ta.selectionStart,ta.selectionEnd,"end");ta.dispatchEvent(new Event("input"));}
+    if(back)ta.selectionStart=ta.selectionEnd=ta.selectionEnd-back;
+    nums();
+  }
+  const CLOSE={"(":")","[":"]","{":"}",'"':'"',"'":"'"};
+  ta.addEventListener("keydown",e=>{
+    if(e.isComposing||e.keyCode===229)return;
+    const v=ta.value, a=ta.selectionStart, b=ta.selectionEnd, prev=v[a-1], next=v[b];
+    if(e.key==="Enter"&&(e.ctrlKey||e.metaKey)){e.preventDefault();$("btnSubmit").click();return;}
+    if(e.key==="Tab"){
+      e.preventDefault();
+      if(e.shiftKey){
+        const ls=v.lastIndexOf("\n",a-1)+1, m=v.slice(ls).match(/^ {1,4}/);
+        if(m){ta.setSelectionRange(ls,ls+m[0].length);ins("");ta.selectionStart=ta.selectionEnd=Math.max(ls,a-m[0].length);}
+      }else ins("    ");
+      return;
     }
+    if(e.key==="Enter"){
+      e.preventDefault();
+      const ls=v.lastIndexOf("\n",a-1)+1, ind=(v.slice(ls,a).match(/^[ \t]*/)||[""])[0];
+      if(prev==="{"&&next==="}")ins("\n"+ind+"  \n"+ind,ind.length+1);
+      else ins("\n"+ind+(prev===":"?"    ":""));
+      return;
+    }
+    if(e.key==="Backspace"&&a===b&&CLOSE[prev]&&CLOSE[prev]===next){
+      e.preventDefault();ta.setSelectionRange(a-1,a+1);ins("");return;
+    }
+    if(e.ctrlKey||e.metaKey||e.altKey)return;
+    if(Object.values(CLOSE).includes(e.key)&&a===b&&next===e.key){e.preventDefault();ta.selectionStart=ta.selectionEnd=a+1;return;}
+    if(CLOSE[e.key]){
+      e.preventDefault();
+      if(a!==b)ins(e.key+v.slice(a,b)+CLOSE[e.key]);
+      else if((e.key==='"'||e.key==="'")&&/\w/.test(prev||""))ins(e.key);
+      else ins(e.key+CLOSE[e.key],1);
+    }
+  });
+  $("btnTpl").onclick=()=>{
+    if(ta.value.trim()&&!confirm("입력한 코드가 사라집니다. 기본 틀로 바꿀까요?"))return;
+    ta.value="# 여기에 코드를 작성하세요\n";
+    ta.dispatchEvent(new Event("input"));ta.focus();ta.setSelectionRange(ta.value.length,ta.value.length);nums();
+  };
+  nums();
+})();
+/* ===== 문항 목록 접기/펼치기 ===== */
+(function(){
+  const btn=$("btnChips"), ch=$("chips"), lab=$("qbarNow"), KEY="py_chips_open_v1";
+  let open=false; try{ open=localStorage.getItem(KEY)==="1"; }catch(e){}
+  function apply(){ ch.classList.toggle("hide",!open); btn.textContent=open?"▲ 문항 목록 접기":"▼ 문항 목록 펼치기"; btn.setAttribute("aria-expanded",open?"true":"false"); }
+  btn.onclick=()=>{ open=!open; try{ localStorage.setItem(KEY,open?"1":"0"); }catch(e){} apply(); };
+  const t=$("qTitle"), upd=()=>{ lab.textContent=t.textContent?"현재: "+t.textContent:""; };
+  new MutationObserver(upd).observe(t,{childList:true,characterData:true,subtree:true}); upd(); apply();
+})();
+$("btnSubmit").onclick=()=>{
+  if(!state.stuId.trim()||!state.stuName.trim()){alert("학번과 이름을 먼저 입력해 주세요.");return;}
+  const q=QUESTIONS[state.cur], s=qs(q.id);
+  const code=box().value.trim();
+  if(!code){alert("코드 입력창이 비어 있어요. 코드를 입력한 뒤 다시 눌러 주세요.");return;}
+  if(false){alert("\n위쪽에 'MakeCode 연결됨'이 보이는지 확인하고, 블록을 만든 뒤 다시 눌러 주세요.\n계속 안 되면 '편집기 새로고침'을 눌러 보세요.");return;}
+  const res=grade(q,code); 
+  s.tries++; s.code=code; s.last={pass:res.pass,items:res.items,at:Date.now()};
+  if(res.pass&&!s.done){s.done=true;s.first=s.tries;}
+  save(); renderAll();
+};
+function setClearMsg(t,k){const m=$("clearMsg");m.textContent=t;m.style.color=k==="ok"?"var(--ok)":"var(--sub)";}
+$("btnClearBlocks").onclick=()=>{if(!confirm("입력한 코드를 모두 지울까요?"))return;box().value="# 여기에 코드를 작성하세요\n";window.refreshLines&&refreshLines();qs(QUESTIONS[state.cur].id).code="";save();setClearMsg("✔ 코드를 지웠어요.","ok");};
+$("codeBox").addEventListener("input",e=>{qs(QUESTIONS[state.cur].id).code=e.target.value;save();});
+$("btnPrev").onclick=()=>{if(state.cur>0){state.cur--;save();renderAll();}};
+$("btnNext").onclick=()=>{if(state.cur<QUESTIONS.length-1){state.cur++;save();renderAll();}};
+$("btnReload").onclick=()=>{ window.open("https://colab.research.google.com/#create=true","_blank"); };
 
-    function buildDropdown() {
-        const select = document.getElementById("question-select");
-        select.innerHTML = "";
-        QUESTIONS.forEach((q, idx) => {
-            const opt = document.createElement("option");
-            opt.value = idx;
-            opt.innerText = `[Q${q.id}] ${q.chapter.split(':')[0]} - ${q.title}`;
-            select.appendChild(opt);
-        });
-    }
+/* 학생 정보 자동 저장 */
+$("stuId").value=state.stuId; $("stuName").value=state.stuName;
+$("stuId").oninput=e=>{state.stuId=e.target.value;save();};
+$("stuName").oninput=e=>{state.stuName=e.target.value;save();};
 
-    function renderQuestion(index) {
-        currentIndex = index;
-        const q = QUESTIONS[index];
-        const record = studentScores[q.id];
-        
-        document.getElementById("question-select").value = index;
-        document.getElementById("btn-prev").disabled = (index === 0);
-        document.getElementById("btn-next").disabled = (index === QUESTIONS.length - 1);
-        
-        document.getElementById("mission-level").className = `badge ${q.level}`;
-        document.getElementById("mission-level").innerText = q.level;
-        document.getElementById("mission-title").innerText = `Q${q.id}. ${q.title} (${q.chapter})`;
-        document.getElementById("mission-desc").innerText = q.description;
-        document.getElementById("mission-standard").innerText = q.standard;
-        document.getElementById("mission-expectation").innerText = q.expectation;
-        
-        const stepsUl = document.getElementById("mission-steps");
-        stepsUl.innerHTML = "";
-        q.steps.forEach(step => {
-            const li = document.createElement("li");
-            li.innerText = step;
-            stepsUl.appendChild(li);
-        });
-        
-        document.getElementById("submit-count").innerText = record.tries;
-        const statusLabel = document.getElementById("completion-status");
-        if (record.done === 1) {
-            statusLabel.className = "status-badge complete";
-            statusLabel.innerText = `✔ 완성 (${record.first}회째 통과)`;
-        } else {
-            statusLabel.className = "status-badge incomplete";
-            statusLabel.innerText = "아직 미완성";
-        }
-        
-        const savedDraft = localStorage.getItem(`draft_q_${q.id}`);
-        document.getElementById("code-editor").value = savedDraft ? savedDraft : "";
-    }
+let teacherOn=false;   // 교사용 비밀번호를 한 번 입력했는지
 
-    function moveQuestion(dir) {
-        let target = currentIndex + dir;
-        if (target >= 0 && target < QUESTIONS.length) { renderQuestion(target); }
-    }
-    function selectQuestion(val) { renderQuestion(parseInt(val, 10)); }
-    function trackDraft() {
-        const q = QUESTIONS[currentIndex];
-        const code = document.getElementById("code-editor").value;
-        localStorage.setItem(`draft_q_${q.id}`, code);
-    }
-    // --- 실시간 정적 분석 채점 및 크로스도메인 전송 엔진 ---
-    function clearEditor() {
-        if(confirm("작성 중인 모든 코드가 삭제됩니다. 지우시겠습니까?")) {
-            document.getElementById("code-editor").value = "";
-            trackDraft();
-        }
-    }
-    function resetEditorToDefault() {
-        document.getElementById("code-editor").value = "# 다시 코드를 작성해 보세요.\n";
-        trackDraft();
-    }
+/* ============ 선생님 화면: 미션 문구 편집 ============
+   - 고친 문구는 이 기기(localStorage)에 자동 저장돼요. (선생님 브라우저에서만 보여요)
+   - 학생들에게 적용하려면 missions.json을 내려받아 GitHub 저장소(index.html과 같은 폴더)에 올리세요.
+   - 학생 화면은 시작할 때 missions.json을 읽어 와서 문구를 바꿔 끼워요. (파일이 없으면 기본 문구) */
+const MKEY="py_missions_draft_v1";
+const LEVELS=["기초","중급","고급"];
+const BASE=QUESTIONS.map(q=>({title:q.title,level:q.level,desc:q.desc,std:q.std,exp:q.exp,steps:q.steps.slice()}));
+function clip(v,n){ return String(v==null?"":v).replace(/\r/g,"").trim().slice(0,n); }
+function cleanOne(o,base){
+  if(!o||typeof o!=="object") return null;
+  const f=(k,n)=>o[k]===undefined?base[k]:clip(o[k],n);
+  const steps=Array.isArray(o.steps)?o.steps.map(t=>clip(t,200)).filter(Boolean).slice(0,12):base.steps.slice();
+  return {title:clip(o.title,60)||base.title, level:LEVELS.includes(o.level)?o.level:base.level,
+          desc:f("desc",600), std:f("std",300), exp:f("exp",300), steps:steps.length?steps:base.steps.slice()};
+}
+function cleanMissions(obj){
+  const src=obj&&typeof obj==="object"&&obj.missions&&typeof obj.missions==="object"?obj.missions:obj;
+  const out={};
+  QUESTIONS.forEach((q,i)=>{ const c=src&&typeof src==="object"?cleanOne(src[q.id],BASE[i]):null; if(c) out[q.id]=c; });
+  return out;
+}
+function loadDraft(){ try{ return cleanMissions(JSON.parse(localStorage.getItem(MKEY))||{}); }catch(e){ return {}; } }
+function saveDraft(){ try{ localStorage.setItem(MKEY,JSON.stringify(draftM)); }catch(e){} }
+let remoteM={}, draftM=loadDraft();
+function applyAll(){   // 처음 문구 ← missions.json ← 이 기기 수정본 순으로 덮어써요.
+  QUESTIONS.forEach((q,i)=>{
+    const m=draftM[q.id]||remoteM[q.id]||BASE[i];
+    q.title=m.title; q.level=m.level; q.desc=m.desc; q.std=m.std; q.exp=m.exp; q.steps=m.steps.slice();
+  });
+}
+function missionOf(q){ return {title:q.title,level:q.level,desc:q.desc,std:q.std,exp:q.exp,steps:q.steps.slice()}; }
+function isModified(i){ return JSON.stringify(missionOf(QUESTIONS[i]))!==JSON.stringify(BASE[i]); }
+function loadRemote(){
+  if(!/^https?:$/.test(location.protocol)) return;
+  // 주소 뒤에 매번 다른 값을 붙여서, GitHub Pages가 옛 파일을 캐시해 두고 있어도 F5(새로고침)만 누르면 최신 문구를 읽어 와요.
+  fetch("missions.json?v="+Date.now(),{cache:"no-store"}).then(r=>r.ok?r.json():null).then(j=>{
+    if(!j) return;
+    remoteM=cleanMissions(j); remoteC=cleanConfig(j); applyAll(); applySiteTitle(); renderAll(); refreshTeacher();
+  }).catch(()=>{});
+}
 
-    function validateAndSubmit() {
-        const id = document.getElementById("student-id").value.trim();
-        const name = document.getElementById("student-name").value.trim();
-        if (!id || !name) {
-            alert("⚠️ 학번과 이름을 정확히 입력해야 결과를 서버에 송신할 수 있습니다.");
-            return;
-        }
-        const q = QUESTIONS[currentIndex];
-        const code = document.getElementById("code-editor").value;
-        const record = studentScores[q.id];
-        record.tries += 1;
-        
-        let isPass = true;
-        q.checks.forEach(keyword => {
-            if (!code.includes(keyword)) { isPass = false; }
-        });
-        
-        if (isPass) {
-            if (record.done === 0) { record.done = 1; record.first = record.tries; }
-            alert(`🎉 통과했습니다! (${record.tries}번째 시도에 성공)`);
-        } else {
-            alert(`✘ 코드에 필요한 블록이나 필수 명령어가 빠져있거나 오타가 있습니다.`);
-        }
-        renderQuestion(currentIndex);
-        
-        let dataString = "";
-        QUESTIONS.forEach(item => {
-            const r = studentScores[item.id];
-            dataString += `${r.done},${r.tries},${r.first};`;
-        });
-        if(dataString.endsWith(";")) dataString = dataString.slice(0, -1);
-        
-        const serverUrl = localStorage.getItem("python_web_app_url");
-        if (!serverUrl) { return; }
-        
-        const finalTargetUrl = `${serverUrl}?action=submit&id=${encodeURIComponent(id)}&name=${encodeURIComponent(name)}&d=${encodeURIComponent(dataString)}&cb=serverCallback`;
-        const oldScript = document.getElementById("jsonp-script");
-        if (oldScript) oldScript.remove();
-        
-        const script = document.createElement("script");
-        script.id = "jsonp-script";
-        script.src = finalTargetUrl;
-        document.body.appendChild(script);
-    }
+let editIdx=0;
+function tMsg(text,kind){ const m=$("tMsg"); m.textContent=text; m.style.color=kind==="ok"?"var(--ok)":kind==="bad"?"var(--bad)":"var(--sub)"; }
+function refreshTeacher(){
+  const box=$("tList"); box.innerHTML="";
+  QUESTIONS.forEach((q,i)=>{
+    const b=document.createElement("button");
+    b.type="button";
+    b.className=(i===editIdx?"active":"")+(isModified(i)?" mod":"");
+    b.textContent=(i+1)+". "+q.title;
+    b.onclick=()=>selectEdit(i);
+    box.appendChild(b);
+  });
+  const nDraft=Object.keys(draftM).length, nRemote=Object.keys(remoteM).length;
+  $("tStatus").textContent=`수정된 문항 ${QUESTIONS.filter((q,i)=>isModified(i)).length}개 · 이 기기 수정본 ${nDraft}개 · 배포 파일(missions.json) ${nRemote?nRemote+"개 적용 중":"없음"}`;
+}
+function selectEdit(i){
+  editIdx=i; const q=QUESTIONS[i];
+  $("tTitle").value=q.title; $("tLevel").value=q.level; $("tDesc").value=q.desc;
+  $("tStd").value=q.std; $("tExp").value=q.exp; $("tSteps").value=q.steps.join("\n");
+  $("tChecks").innerHTML=q.checks.map(c=>"<li>"+esc(c.label)+"</li>").join("");
+  tMsg("");
+  refreshTeacher();
+}
+function onTeacherInput(){
+  const q=QUESTIONS[editIdx];
+  draftM[q.id]=cleanOne({title:$("tTitle").value,level:$("tLevel").value,desc:$("tDesc").value,std:$("tStd").value,exp:$("tExp").value,
+                         steps:$("tSteps").value.split("\n")},BASE[editIdx]);
+  dirty=true; saveDraft(); applyAll(); renderAll(); refreshTeacher();
+  tMsg("✔ 이 기기에 저장됐어요. 다 고쳤으면 ‘🚀 학생에게 적용하기’를 눌러 주세요.","ok");
+}
+["tTitle","tLevel","tDesc","tStd","tExp","tSteps"].forEach(id=>{ $(id).addEventListener("input",onTeacherInput); $(id).addEventListener("change",onTeacherInput); });
 
-    window.serverCallback = function(response) {
-        if (response && response.ok) { console.log("구글 시트 수집 완료"); }
-    };
-    function toggleAdmin() {
-        const panel = document.getElementById("admin-panel");
-        panel.style.display = (panel.style.display === "block") ? "none" : "block";
+function askTeacher(){
+  if(teacherOn) return true;
+  const pw=prompt("교사용 비밀번호를 입력하세요.");
+  if(pw===null) return false;
+  if(pw!==TEACHER_PASSWORD){ alert("비밀번호가 맞지 않아요."); return false; }
+  teacherOn=true; return true;
+}
+$("btnEdit").onclick=()=>{
+  if(!askTeacher()) return;
+  $("teacherScreen").classList.remove("hidden");
+  fillPub(); $("cUrl").value=getSubmitUrl(); $("tSiteTitle").value=getSiteTitle();
+  selectEdit(Math.min(state.cur,QUESTIONS.length-1));
+};
+/* ---- 학생에게 바로 적용: GitHub에 missions.json을 자동으로 저장 (파일을 직접 올릴 필요 없음) ----
+   · 처음 한 번 저장소 이름과 토큰(fine-grained, Contents 읽기/쓰기)을 입력하면, 이 컴퓨터 브라우저에만 저장돼요.
+   · 코드에는 토큰이 들어 있지 않아요. 학생 컴퓨터에서는 입력하지 마세요. */
+const PKEY="py_publish_v1";
+let dirty=false;   // 아직 학생들에게 적용하지 않은 수정이 있는지
+function loadPub(){ try{ const o=JSON.parse(localStorage.getItem(PKEY)); if(o&&typeof o==="object") return o; }catch(e){} return {}; }
+let pub=loadPub();
+function guessRepo(){   // 주소가 사용자.github.io/저장소/ 형태면 자동으로 채워요.
+  const h=location.hostname;
+  if(!/\.github\.io$/.test(h)) return "";
+  const seg=location.pathname.split("/")[1];
+  return h.split(".")[0]+"/"+(seg&&!/\.html?$/i.test(seg)?seg:h);
+}
+function fillPub(){
+  $("pRepo").value=pub.repo||guessRepo(); $("pBranch").value=pub.branch||"main";
+  $("pPath").value=pub.path||"missions.json"; $("pToken").value=pub.token||"";
+}
+function pubReady(){ return !!(pub.repo&&pub.token); }
+function missionsJson(){
+  const missions={};
+  QUESTIONS.forEach((q,i)=>{ if(isModified(i)) missions[q.id]=missionOf(q); });
+  return {count:Object.keys(missions).length,text:JSON.stringify({version:1,updatedAt:new Date().toISOString(),config:configForExport(),missions},null,2)};
+}
+$("pSave").onclick=()=>{
+  const o={repo:$("pRepo").value.trim(),branch:$("pBranch").value.trim()||"main",
+           path:$("pPath").value.trim().replace(/^\/+/,"")||"missions.json",token:$("pToken").value.trim()};
+  if(!/^[\w.-]+\/[\w.-]+$/.test(o.repo)){ tMsg("저장소는 ‘내아이디/저장소이름’ 형태로 입력해 주세요.","bad"); return; }
+  if(!o.token){ tMsg("토큰을 입력해 주세요.","bad"); return; }
+  pub=o; try{ localStorage.setItem(PKEY,JSON.stringify(pub)); }catch(e){}
+  tMsg("✔ 설정을 이 컴퓨터에 저장했어요. 이제 ‘🚀 학생에게 적용하기’를 누르면 돼요.","ok");
+};
+$("pClear").onclick=()=>{
+  if(!confirm("저장된 GitHub 설정과 토큰을 이 컴퓨터에서 지울까요?")) return;
+  pub={}; try{ localStorage.removeItem(PKEY); }catch(e){} fillPub(); tMsg("설정을 지웠어요.","ok");
+};
+function ghFail(status,message){ const e=new Error(message||""); e.status=status; return e; }
+async function ghErr(res){ let m=""; try{ m=(await res.json()).message||""; }catch(e){} return ghFail(res.status,m); }
+function friendlyGh(err){
+  if(!err||err.status===undefined) return "GitHub에 연결하지 못했어요. 인터넷 연결을 확인하고 다시 눌러 주세요.";
+  if(err.status===401) return "토큰이 올바르지 않거나 기간이 지났어요. 새 토큰을 만들어 다시 저장해 주세요.";
+  if(err.status===403) return "권한이 없거나 요청 한도를 넘었어요. 토큰에 ‘Contents: Read and write’ 권한이 있는지 확인해 주세요.";
+  if(err.status===404) return "저장소를 찾지 못했어요. 저장소 이름·브랜치를 확인하고, 토큰이 그 저장소에 접근할 수 있는지 확인해 주세요.";
+  return `저장하지 못했어요. (오류 ${err.status}${err.message?": "+err.message:""})`;
+}
+async function publishMissions(){
+  if(!pubReady()){ tMsg("먼저 아래 ‘처음 한 번만 설정’에서 저장소와 토큰을 입력해 주세요.","bad"); $("pubSetup").open=true; return false; }
+  const c=pub, {text}=missionsJson();
+  const api=`https://api.github.com/repos/${c.repo}/contents/${c.path.split("/").map(encodeURIComponent).join("/")}`;
+  const headers={Authorization:"Bearer "+c.token,Accept:"application/vnd.github+json","X-GitHub-Api-Version":"2022-11-28"};
+  const content=btoa(unescape(encodeURIComponent(text)));
+  $("tPublish").disabled=true; tMsg("GitHub에 저장하는 중이에요...");
+  try{
+    for(let attempt=0;attempt<2;attempt++){
+      let sha;
+      const g=await fetch(`${api}?ref=${encodeURIComponent(c.branch)}&t=${Date.now()}`,{headers,cache:"no-store"});
+      if(g.status===200) sha=(await g.json()).sha;
+      else if(g.status!==404) throw await ghErr(g);
+      const body={message:"미션 문구 수정 ("+new Date().toLocaleString("ko-KR",{timeZone:"Asia/Seoul"})+")",content,branch:c.branch};
+      if(sha) body.sha=sha;
+      const p=await fetch(api,{method:"PUT",headers:{...headers,"Content-Type":"application/json"},body:JSON.stringify(body)});
+      if(p.ok){ dirty=false; tMsg("✔ GitHub에 저장했어요! 1~2분 뒤 학생들이 F5를 누르면 바뀐 문구가 보여요.","ok"); return true; }
+      if((p.status===409||p.status===422)&&attempt===0) continue;   // 그 사이 파일이 바뀐 경우 한 번 더 시도
+      throw await ghErr(p);
     }
-    function saveAdminSettings() {
-        const url = document.getElementById("web-app-url").value.trim();
-        if(!url || !url.startsWith("https://")) { alert("올바른 주소가 아닙니다."); return; }
-        localStorage.setItem("python_web_app_url", url);
-        alert("🚀 주소가 서버에 적용되었습니다.");
-        toggleAdmin();
-    }
-    function saveStudentContext() {
-        localStorage.setItem("student_id_val", document.getElementById("student-id").value);
-        localStorage.setItem("student_name_val", document.getElementById("student-name").value);
-    }
-    function loadStudentContext() {
-        const id = localStorage.getItem("student_id_val");
-        const name = localStorage.getItem("student_name_val");
-        if(id) document.getElementById("student-id").value = id;
-        if(name) document.getElementById("student-name").value = name;
-    }
+    return false;
+  }catch(err){ console.error("GitHub 저장 오류:",err); tMsg(friendlyGh(err),"bad"); return false; }
+  finally{ $("tPublish").disabled=false; }
+}
+$("tPublish").onclick=()=>{ publishMissions(); };
+
+$("tClose").onclick=async()=>{
+  if(dirty&&pubReady()&&confirm("고친 내용을 학생들에게 적용할까요?\n(확인을 누르면 GitHub에 자동 저장돼요. 1~2분 뒤 학생들이 F5를 누르면 보여요.)")){
+    if(!(await publishMissions())) return;   // 실패하면 화면을 닫지 않고 오류를 보여줘요.
+  }
+  $("teacherScreen").classList.add("hidden"); renderAll();
+};
+document.addEventListener("keydown",e=>{ if(e.key==="Escape"&&!$("teacherScreen").classList.contains("hidden")) $("tClose").onclick(); });
+
+$("tExport").onclick=()=>{
+  const {count,text}=missionsJson();
+  const a=document.createElement("a");
+  a.href=URL.createObjectURL(new Blob([text],{type:"application/json;charset=utf-8"}));
+  a.download="missions.json"; a.click(); URL.revokeObjectURL(a.href);
+  tMsg(`missions.json을 내려받았어요. (수정된 ${count}개 문항) GitHub 저장소(index.html이 있는 곳)에 직접 올려 주세요.`,"ok");
+};
+$("tImportBtn").onclick=()=>$("tImportFile").click();
+$("tImportFile").onchange=async e=>{
+  const f=e.target.files[0]; e.target.value=""; if(!f) return;
+  let j; try{ j=JSON.parse(await f.text()); }catch(err){ tMsg("파일을 읽지 못했어요. missions.json 형식이 맞는지 확인해 주세요.","bad"); return; }
+  const c=cleanMissions(j), cc=cleanConfig(j);
+  if(!Object.keys(c).length&&!cc){ tMsg("불러올 내용이 없어요. (Q1, Q2 … 형식의 missions가 들어 있어야 해요)","bad"); return; }
+  if(cc){ draftC=Object.assign({},draftC,cc); saveDraftC(); $("cUrl").value=getSubmitUrl(); $("tSiteTitle").value=getSiteTitle(); applySiteTitle(); }
+  Object.assign(draftM,c); dirty=true; saveDraft(); applyAll(); renderAll(); selectEdit(editIdx);
+  tMsg(`✔ ${Object.keys(c).length}개 문항을 불러왔어요.`,"ok");
+};
+$("tResetOne").onclick=()=>{
+  const q=QUESTIONS[editIdx];
+  if(!confirm(`${editIdx+1}번 문항을 처음 문구로 되돌릴까요?`)) return;
+  draftM[q.id]=cleanOne(BASE[editIdx],BASE[editIdx]); dirty=true; saveDraft(); applyAll(); renderAll(); selectEdit(editIdx);
+  tMsg("처음 문구로 되돌렸어요.","ok");
+};
+$("tClearDraft").onclick=()=>{
+  if(!confirm("이 기기에 저장된 수정본을 모두 지울까요?\n(배포된 missions.json이 있으면 그 문구로, 없으면 처음 문구로 돌아가요.)")) return;
+  draftM={}; draftC=null; saveDraftC(); $("cUrl").value=getSubmitUrl(); $("tSiteTitle").value=getSiteTitle(); applySiteTitle(); dirty=true; saveDraft(); applyAll(); renderAll(); selectEdit(editIdx);
+  tMsg("이 기기 수정본을 지웠어요.","ok");
+};
+
+/* ============ 결과 제출 (학생 → 선생님 구글 시트) ============
+   · 선생님 화면에서 Apps Script 웹 앱 주소를 넣으면 missions.json(config)에 담겨 학생들에게 배포돼요.
+   · 브라우저 보안 규칙(CORS)에 걸리지 않도록 ‘스크립트 호출(JSONP)’ 방식으로 보내고, 시트에 기록됐다는 응답이 와야 ‘제출 완료’를 보여줘요. */
+const DEFAULT_SUBMIT_URL="";   // 여기에 직접 적어도 되지만, 보통은 선생님 화면에서 설정해요.
+const DEFAULT_TITLE="파이썬 기본 문법 실습";
+const SUBMIT_URL_RE=/^https:\/\/script\.google\.com\/(?:a\/macros\/[\w.-]+|macros)\/s\/[\w-]+\/exec$/;
+const CKEY="py_config_draft_v1";
+function cleanConfig(o){
+  const c=o&&typeof o==="object"&&o.config&&typeof o.config==="object"?o.config:null;
+  if(!c) return null;
+  const out={};
+  if(c.submitUrl!==undefined){ const u=clip(c.submitUrl,300); out.submitUrl=SUBMIT_URL_RE.test(u)?u:""; }
+  const t=clip(c.title,40); if(t) out.title=t;
+  return out;
+}
+function loadDraftC(){ try{ return cleanConfig({config:JSON.parse(localStorage.getItem(CKEY))}); }catch(e){ return null; } }
+function saveDraftC(){ try{ if(draftC) localStorage.setItem(CKEY,JSON.stringify(draftC)); else localStorage.removeItem(CKEY); }catch(e){} }
+let draftC=loadDraftC(), remoteC=null;
+function getSubmitUrl(){
+  if(draftC&&draftC.submitUrl!==undefined) return draftC.submitUrl;
+  if(remoteC&&remoteC.submitUrl!==undefined) return remoteC.submitUrl;
+  return DEFAULT_SUBMIT_URL;
+}
+function getSiteTitle(){ return (draftC&&draftC.title)||(remoteC&&remoteC.title)||DEFAULT_TITLE; }
+function applySiteTitle(){ const t=getSiteTitle(); $("siteTitle").textContent=t; document.title=t; }
+
+function jsonp(url,params,timeoutMs){
+  return new Promise((resolve,reject)=>{
+    const cb="__mbcb"+Date.now()+Math.floor(Math.random()*1e6);
+    const s=document.createElement("script");
+    let finished=false;
+    const finish=()=>{ finished=true; delete window[cb]; s.remove(); clearTimeout(timer); };
+    const timer=setTimeout(()=>{ if(!finished){ finish(); reject(new Error("timeout")); } },timeoutMs||15000);
+    window[cb]=data=>{ if(!finished){ finish(); resolve(data); } };
+    s.onerror=()=>{ if(!finished){ finish(); reject(new Error("load")); } };
+    s.src=url+"?"+new URLSearchParams(Object.assign({},params,{cb})).toString();
+    document.head.appendChild(s);
+  });
+}
+let toastTimer=null;
+function toast(text,kind,ms){
+  const t=$("toast"); t.textContent=text; t.className="toast"+(kind?" "+kind:"");
+  clearTimeout(toastTimer); toastTimer=setTimeout(()=>t.classList.add("hidden"),ms||(kind==="bad"?9000:6000));
+}
+function packResults(){   // 문항 순서대로 "통과(0/1),제출횟수,통과차수" 를 ; 로 이어 붙여요.
+  return QUESTIONS.map(q=>{ const s=qs(q.id); return [s.done?1:0,s.tries,s.done?s.first:0].join(","); }).join(";");
+}
+$("btnSubmitResult").onclick=async()=>{
+  const id=state.stuId.trim(), name=state.stuName.trim();
+  if(!id||!name){ toast("학번과 이름을 먼저 입력해 주세요.","bad"); $(id?"stuName":"stuId").focus(); return; }
+  const url=getSubmitUrl();
+  if(!url){ toast("결과를 받을 주소가 아직 설정되지 않았어요. 선생님께 알려 주세요.","bad"); return; }
+  const doneN=QUESTIONS.filter(q=>qs(q.id).done).length;
+  if(!confirm(`학번 ${id} ${name} 학생의 결과를 제출할까요?\n(완성 ${doneN}문항 / 전체 ${QUESTIONS.length}문항)\n다시 제출하면 최신 결과로 바뀌어요.`)) return;
+  const btn=$("btnSubmitResult"); btn.disabled=true; toast("제출하는 중이에요...","",30000);
+  try{
+    const r=await jsonp(url,{action:"submit",id,name,d:packResults()},20000);
+    if(r&&r.ok) toast(`✔ 제출 완료! 선생님께 전달됐어요. (완성 ${r.doneCount}/${r.total}문항${r.updated?" · 이전 결과를 최신으로 바꿨어요":""})`,"ok");
+    else toast("제출하지 못했어요: "+((r&&r.error)||"알 수 없는 오류"),"bad");
+  }catch(err){
+    console.error("제출 오류:",err);
+    toast("선생님께 전달되지 않았어요. 인터넷 연결을 확인하고 다시 눌러 보세요. 계속 안 되면 선생님께 알려 주세요.","bad");
+  }finally{ setTimeout(()=>{ btn.disabled=false; },1500); }
+};
+
+/* 선생님 화면: 결과 받을 주소 설정 */
+function onConfigInput(){
+  const u=$("cUrl").value.trim();
+  if(u&&!SUBMIT_URL_RE.test(u)){ tMsg("주소 형식이 달라요. Apps Script ‘웹 앱 URL’(…/exec 로 끝나는 주소)을 붙여넣어 주세요.","bad"); return; }
+  draftC=Object.assign({},draftC,{submitUrl:u}); saveDraftC(); dirty=true;
+  tMsg(u?"✔ 주소를 저장했어요. ‘🔌 연결 테스트’로 확인하고 ‘🚀 학생에게 적용하기’를 눌러 주세요.":"결과 받을 주소를 비웠어요. (적용하면 학생 화면의 제출이 막혀요)","ok");
+}
+function configForExport(){   // 주소가 비어 있으면(선생님이 일부러 비운 경우가 아니면) 파일에 넣지 않아서 기존 주소를 덮어쓰지 않아요.
+  const cfg={title:getSiteTitle()}, u=getSubmitUrl();
+  if(u||(draftC&&draftC.submitUrl!==undefined)) cfg.submitUrl=u;
+  return cfg;
+}
+function onTitleInput(){
+  const t=clip($("tSiteTitle").value,40);
+  draftC=Object.assign({},draftC); if(t) draftC.title=t; else delete draftC.title;
+  saveDraftC(); dirty=true; applySiteTitle();
+  tMsg(t?"✔ 제목을 바꿨어요. 다 고쳤으면 ‘🚀 학생에게 적용하기’를 눌러 주세요.":"제목을 비웠어요. (기본 제목이 표시돼요)","ok");
+}
+$("tSiteTitle").addEventListener("input",onTitleInput);
+$("cUrl").addEventListener("input",onConfigInput); $("cUrl").addEventListener("change",onConfigInput);
+$("cTest").onclick=async()=>{
+  const u=$("cUrl").value.trim();
+  if(!SUBMIT_URL_RE.test(u)){ tMsg("먼저 …/exec 로 끝나는 웹 앱 주소를 입력해 주세요.","bad"); return; }
+  tMsg("연결을 확인하는 중이에요...");
+  try{
+    const r=await jsonp(u,{action:"ping"},12000);
+    if(r&&r.ok) tMsg("✔ 연결됐어요! 학생들의 결과를 받을 준비가 됐어요.","ok");
+    else tMsg("연결은 됐지만 응답이 이상해요: "+((r&&r.error)||"알 수 없음"),"bad");
+  }catch(err){
+    tMsg("응답이 없어요. ① 배포할 때 액세스 권한이 ‘모든 사용자’인지 ② 주소가 …/exec 인지 ③ 코드를 고친 뒤 ‘새 버전’으로 다시 배포했는지 확인해 주세요.","bad");
+  }
+};
+$("gsCopy").onclick=async()=>{
+  const ta=$("gsCode");
+  try{ await navigator.clipboard.writeText(ta.value); tMsg("✔ 코드를 복사했어요. Apps Script 편집기에 붙여넣으세요.","ok"); }
+  catch(e){ ta.focus(); ta.select(); tMsg("자동 복사가 안 돼요. 코드 칸에서 전체 선택(Ctrl+A) 후 복사(Ctrl+C) 해 주세요.","bad"); }
+};
+
+/* ============ 시작 ============ */
+applyAll();
+applySiteTitle();
+renderLed();
+renderAll();
+loadRemote();
 </script>
 </body>
 </html>
-
-    
